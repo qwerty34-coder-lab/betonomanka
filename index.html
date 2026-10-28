@@ -351,6 +351,101 @@ $("reset").addEventListener("click",()=>{
 });
 renderAll();
 </script>
+
+<style>
+  #admin-login {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #100c1d;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+
+  #admin-login .panel {
+    width: 100%;
+    max-width: 340px;
+    padding: 26px;
+    border: 1px solid #49336f;
+    border-radius: 22px;
+    background: #1b142b;
+    text-align: center;
+  }
+
+  #admin-login input,
+  #admin-login button {
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    border: 0;
+    border-radius: 12px;
+    font-size: 16px;
+  }
+
+  #admin-login input {
+    background: #2a203e;
+    color: white;
+  }
+
+  #admin-login button {
+    background: #8958ed;
+    color: white;
+    font-weight: bold;
+  }
+
+  #admin-login .error {
+    color: #ff7979;
+    font-size: 13px;
+  }
+</style>
+
+<div id="admin-login">
+  <div class="panel">
+    <h2>BETONOMANKA</h2>
+    <p>Вход для администратора</p>
+    <input id="admin-password" type="password"
+      placeholder="Введите пароль">
+    <button onclick="checkAdminPassword()">Войти</button>
+    <p id="admin-error" class="error"></p>
+    <button onclick="closeAdminLogin()"
+      style="background:#342747">Отмена</button>
+  </div>
+</div>
+
+<script>
+  // ЗАМЕНИ пароль на свой
+  const ADMIN_PASSWORD = "BETONO2026";
+
+  function openAdminLogin() {
+    document.getElementById("admin-login").style.display = "flex";
+    document.getElementById("admin-password").value = "";
+    document.getElementById("admin-error").textContent = "";
+  }
+
+  function closeAdminLogin() {
+    document.getElementById("admin-login").style.display = "none";
+  }
+
+  function checkAdminPassword() {
+    const entered = document.getElementById("admin-password").value;
+
+    if (entered === ADMIN_PASSWORD) {
+      closeAdminLogin();
+      document.querySelectorAll('[data-page="admin"]').forEach(el => {
+        el.style.display = "";
+      });
+      alert("Вход выполнен!");
+    } else {
+      document.getElementById("admin-error").textContent =
+        "Неверный пароль";
+    }
+  }
+</script>
 </body>
 </html>
 
