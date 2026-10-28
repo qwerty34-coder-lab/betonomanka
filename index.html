@@ -3,460 +3,356 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b0812">
-<title>BETONOMANKA — CS2 Predictions</title>
+<title>BETONOMANKA — CS2</title>
 <style>
-:root {
-  --bg:#0b0812;
-  --panel:#151020;
-  --panel2:#1c152a;
-  --purple:#9b5cff;
-  --pink:#d65cff;
-  --text:#f7f3ff;
-  --muted:#a69ab9;
-  --green:#68f5b0;
-  --border:#30223f;
-}
+:root{--bg:#0b0812;--panel:#171020;--panel2:#21152e;--border:#352342;--purple:#a45cff;--pink:#d15cff;--text:#f8f3ff;--muted:#a99bb8;--green:#68f5b0;--red:#ff779a}
 *{box-sizing:border-box}
-body{
-  margin:0;background:
-  radial-gradient(ellipse at 50% -15%,#422064 0%,transparent 48%),
-  var(--bg);color:var(--text);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  min-height:100vh;padding-bottom:90px
-}
-button,input{font:inherit}
-button{cursor:pointer}
-.app{max-width:760px;margin:auto;padding:18px 15px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+body{margin:0;background:radial-gradient(ellipse at top,#321447 0,transparent 43%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;padding-bottom:90px}
+button,input{font:inherit}button{cursor:pointer}
+.app{max-width:800px;margin:auto;padding:17px 14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-icon{
- width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
- background:linear-gradient(135deg,#bd65ff,#6e35d7);
- box-shadow:0 0 24px #9b5cff50;font-size:22px;font-weight:1000
-}
-.brand-name{font-size:19px;font-weight:1000;letter-spacing:1px}
-.brand-sub{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:3px}
-.balance{
- background:linear-gradient(135deg,#211631,#171020);
- border:1px solid #573879;border-radius:14px;padding:10px 12px;text-align:right;
- min-width:125px
-}
-.balance-label{font-size:10px;color:var(--muted)}
-.balance-value{font-size:17px;font-weight:900;color:var(--green);margin-top:3px}
-.hero{
- padding:22px 20px;border:1px solid #4c2b67;border-radius:22px;
- background:linear-gradient(120deg,#241333,#171020 65%,#251433);
- position:relative;overflow:hidden;margin-bottom:24px
-}
-.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;
- background:#9b5cff20;filter:blur(8px);right:-65px;top:-75px}
-.eyebrow{color:#ce9dff;font-size:11px;font-weight:800;letter-spacing:2px}
-.hero h1{font-size:27px;line-height:1.12;margin:12px 0 9px;max-width:410px}
-.hero p{font-size:13px;line-height:1.6;color:#b9adc9;margin:0;max-width:430px}
-.hero-stats{display:flex;gap:22px;margin-top:19px}
-.stat strong{display:block;font-size:17px}
-.stat span{font-size:10px;color:var(--muted)}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 13px}
-.section-head h2{font-size:18px;margin:0}
-.live-pill{font-size:10px;color:var(--green);background:#153428;padding:6px 9px;border-radius:20px}
-.filters{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto}
-.filter{
- flex-shrink:0;border:1px solid var(--border);background:#130e1c;color:var(--muted);
- border-radius:10px;padding:9px 13px;font-size:12px
-}
-.filter.active{background:#352047;border-color:var(--purple);color:#fff}
+.brandicon{height:43px;width:43px;border-radius:14px;display:grid;place-items:center;font-size:23px;font-weight:1000;background:linear-gradient(135deg,#d15cff,#6734db);box-shadow:0 0 24px #a45cff45}
+.brandname{font-size:17px;font-weight:1000;letter-spacing:.7px}
+.sub{font-size:10px;color:var(--muted);letter-spacing:2px}
+.balance{padding:9px 11px;border:1px solid #644184;border-radius:13px;background:#1b1227;text-align:right}
+.balance small{display:block;color:var(--muted);font-size:10px}
+.balance strong{color:var(--green);font-size:16px}
+.hero{padding:21px;border:1px solid #51326a;border-radius:20px;background:linear-gradient(120deg,#2a1739,#151020);margin-bottom:23px}
+.eyebrow{font-size:10px;letter-spacing:2px;color:#d4a5ff;font-weight:800}
+.hero h1{font-size:29px;line-height:1.15;margin:10px 0}
+.hero p{font-size:12px;line-height:1.6;color:#b8a9c7;margin:0}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:22px 0 13px}
+h2{font-size:18px;margin:0}
+.pill{font-size:10px;color:var(--green);background:#173628;border-radius:20px;padding:6px 9px}
+.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:14px}
+.tab{white-space:nowrap;padding:9px 13px;border-radius:10px;background:#15101d;border:1px solid var(--border);color:var(--muted);font-size:12px}
+.tab.active{background:#39204c;color:white;border-color:var(--purple)}
+.page{display:none}.page.active{display:block}
 .matches{display:grid;gap:13px}
-.match{
- background:linear-gradient(145deg,#191222,#110d18);
- border:1px solid var(--border);border-radius:19px;padding:16px;
- transition:.2s
-}
-.match:hover{border-color:#69418a}
-.match-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.tournament{font-size:10px;color:#c5a4e7;letter-spacing:.6px}
-.match-status{font-size:10px;color:#a99bb9}
-.teams{display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;gap:8px}
-.team{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;min-width:0}
-.logo{
- width:58px;height:58px;object-fit:contain;border-radius:15px;
- background:#fff;padding:7px;border:1px solid #ffffff12
-}
-.logo-fallback{
- width:58px;height:58px;border-radius:15px;display:grid;place-items:center;
- background:linear-gradient(145deg,#352044,#21152f);border:1px solid #51346b;
- font-size:18px;font-weight:1000;color:#e7cfff
-}
-.team-name{font-size:13px;font-weight:800;overflow-wrap:anywhere}
-.vs{font-size:11px;color:#786a8a;text-align:center;font-weight:900}
-.odds{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.odds button{
- border:1px solid #382644;border-radius:12px;background:#21172d;color:white;
- padding:11px 8px;display:flex;justify-content:space-between;align-items:center;gap:6px
-}
-.odds button:hover{background:#342044;border-color:var(--purple)}
-.odds button.selected{background:#482769;border-color:#c184ff;box-shadow:0 0 0 1px #9b5cff50}
-.odds span{font-size:11px;color:#bcaacb}
-.odds strong{font-size:15px;color:#d7b3ff}
-.card-foot{display:flex;justify-content:space-between;gap:8px;margin-top:13px;color:#82748f;font-size:10px}
-.empty{color:var(--muted);text-align:center;padding:35px 10px}
-.panel{
- background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:17px;margin-top:15px
-}
-.panel h3{margin:0 0 14px;font-size:15px}
-.field-label{display:block;color:var(--muted);font-size:11px;margin-bottom:8px}
-.stake-input{
- width:100%;background:#0e0a15;color:white;border:1px solid #453054;
- border-radius:12px;padding:13px;outline:none
-}
-.stake-input:focus{border-color:var(--purple)}
-.quick-stakes{display:flex;gap:7px;margin:10px 0 15px}
-.quick-stakes button{
- flex:1;padding:9px 4px;background:#21172d;color:#d8c4ee;border:1px solid #382644;border-radius:9px;font-size:11px
-}
-.bet-summary{display:flex;justify-content:space-between;gap:12px;margin:12px 0;font-size:12px;color:var(--muted)}
-.bet-summary strong{color:white}
-.potential{color:var(--green)!important}
-.primary{
- width:100%;border:0;border-radius:12px;padding:14px;color:white;font-weight:900;
- background:linear-gradient(100deg,#9747ef,#c253ee);
- box-shadow:0 5px 20px #9b5cff20
-}
+.match,.panel{background:linear-gradient(145deg,#1b1325,#120d19);border:1px solid var(--border);border-radius:17px;padding:15px}
+.matchtop{display:flex;justify-content:space-between;gap:8px;margin-bottom:16px}
+.tourney{font-size:10px;color:#d0a5f5;letter-spacing:.6px}
+.status{font-size:10px;color:var(--muted)}
+.teams{display:grid;grid-template-columns:1fr 32px 1fr;align-items:center;gap:7px}
+.team{display:flex;align-items:center;flex-direction:column;gap:8px;text-align:center}
+.logo{width:54px;height:54px;object-fit:contain;padding:6px;background:#fff;border-radius:14px}
+.fallback{width:54px;height:54px;border-radius:14px;background:#32203f;border:1px solid #684188;display:grid;place-items:center;font-weight:900}
+.teamname{font-size:13px;font-weight:800}
+.vs{text-align:center;color:#7d6a8d;font-size:11px;font-weight:900}
+.odds{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:17px}
+.odd{border:1px solid #392747;border-radius:11px;background:#24182f;color:white;padding:11px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.odd span{font-size:11px;color:#c1b0d1}.odd strong{color:#d8b5ff;font-size:14px}
+.odd.selected{border-color:#ce91ff;background:#492663;box-shadow:0 0 0 1px #a45cff50}
+.cardfoot{display:flex;justify-content:space-between;margin-top:12px;color:#887a96;font-size:10px}
+.panel{margin-top:14px;padding:17px}
+.panel h3{font-size:15px;margin:0 0 13px}
+.label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}
+.input{width:100%;border:1px solid #493257;border-radius:11px;padding:12px;background:#0e0a15;color:white;outline:none}
+.input:focus{border-color:var(--purple)}
+.quick{display:flex;gap:7px;margin:9px 0 14px}
+.quick button{flex:1;border:1px solid #392747;border-radius:9px;padding:8px 3px;background:#24182f;color:#d8b5ff;font-size:11px}
+.primary{width:100%;border:0;border-radius:11px;padding:13px;color:white;font-weight:900;background:linear-gradient(100deg,#9144e8,#c052e9)}
 .primary:disabled{opacity:.35;cursor:not-allowed}
-.notice{font-size:10px;line-height:1.5;color:#837790;margin-top:11px}
-.history-item{
- display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #2a2035;font-size:12px
-}
-.history-item:last-child{border-bottom:0}
-.history-title{font-weight:800;margin-bottom:5px}
-.history-meta{color:var(--muted);font-size:10px}
-.history-amount{text-align:right;font-weight:900;white-space:nowrap}
-.bottom-nav{
- position:fixed;z-index:5;bottom:0;left:0;right:0;
- background:#100c18ed;backdrop-filter:blur(18px);border-top:1px solid #30213d;
- display:flex;justify-content:center;padding:10px 8px max(10px,env(safe-area-inset-bottom))
-}
-.nav-inner{display:flex;width:100%;max-width:520px;justify-content:space-around}
-.nav-btn{border:0;background:none;color:#887a9b;font-size:10px;padding:5px 13px;display:flex;flex-direction:column;align-items:center;gap:5px}
-.nav-btn .nav-icon{font-size:20px}
-.nav-btn.active{color:#d5a6ff}
-.page{display:none}
-.page.active{display:block}
-.profile-avatar{
- width:72px;height:72px;border-radius:23px;display:grid;place-items:center;
- margin:0 auto 12px;font-size:30px;font-weight:1000;
- background:linear-gradient(135deg,#c15cff,#6033c6)
-}
+.rowline{display:flex;justify-content:space-between;gap:12px;margin:12px 0;font-size:12px;color:var(--muted)}
+.rowline strong{color:white}.green{color:var(--green)!important}
+.muted{color:var(--muted);font-size:11px;line-height:1.5}
+.selection{padding:11px;background:#100b17;border:1px solid #2c2036;border-radius:11px;margin-bottom:9px}
+.selrow{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px}
+.selrow button{border:0;background:transparent;color:var(--red);font-size:17px}
+.selmeta{font-size:10px;color:var(--muted);margin-top:5px}
+.empty{text-align:center;color:var(--muted);font-size:12px;padding:23px 8px}
+.historyitem{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #30213a;padding:13px 0;font-size:12px}
+.historyitem:last-child{border:0}
+.historymeta{color:var(--muted);font-size:10px;margin-top:5px}
+.amount{text-align:right;white-space:nowrap;font-weight:900}
+.resultbtns{display:flex;gap:6px;margin-top:10px}
+.resultbtns button{flex:1;border:1px solid var(--border);background:#24182f;color:#eee;border-radius:9px;padding:9px 3px;font-size:11px}
+.resultbtns button:hover{border-color:var(--purple)}
 .profile{text-align:center}
-.profile h2{margin:0 0 5px}
-.profile p{font-size:12px;color:var(--muted);margin:0}
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
-.profile-stat{padding:15px;background:#100c18;border:1px solid var(--border);border-radius:13px}
-.profile-stat span{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
-.profile-stat strong{font-size:19px}
-.danger{background:#29151f;color:#ff9cbd;border:1px solid #663148;border-radius:10px;padding:11px;width:100%;margin-top:14px}
-.toast{
- position:fixed;top:18px;left:50%;transform:translate(-50%,-150%);
- background:#251834;border:1px solid #7546a0;border-radius:12px;padding:12px 16px;
- font-size:12px;z-index:20;transition:.25s;max-width:90%;text-align:center
-}
+.avatar{width:70px;height:70px;margin:0 auto 12px;display:grid;place-items:center;border-radius:22px;font-size:30px;font-weight:1000;background:linear-gradient(135deg,#d15cff,#6734db)}
+.gridstats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}
+.stat{background:#100c18;border:1px solid var(--border);border-radius:12px;padding:13px}
+.stat span{display:block;font-size:10px;color:var(--muted);margin-bottom:6px}.stat strong{font-size:17px}
+.danger{width:100%;margin-top:13px;padding:10px;background:#301722;border:1px solid #663148;color:#ff9cbd;border-radius:10px}
+.nav{position:fixed;z-index:10;bottom:0;left:0;right:0;background:#100c18ee;backdrop-filter:blur(15px);border-top:1px solid #30213d;padding:9px 5px max(9px,env(safe-area-inset-bottom))}
+.navinner{display:flex;justify-content:space-around;max-width:500px;margin:auto}
+.nav button{border:0;background:none;color:#8f819f;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 12px}
+.nav button span{font-size:19px}.nav button.active{color:#d3a2ff}
+.toast{position:fixed;z-index:20;top:15px;left:50%;transform:translate(-50%,-150%);background:#281836;border:1px solid #70449a;border-radius:11px;padding:12px 15px;font-size:12px;transition:.25s;max-width:90%;text-align:center}
 .toast.show{transform:translate(-50%,0)}
-@media(min-width:600px){
- .app{padding:25px 22px}
- .matches{grid-template-columns:1fr 1fr}
- .hero h1{font-size:34px}
-}
+@media(min-width:620px){.app{padding:24px}.matches{grid-template-columns:1fr 1fr}.hero h1{font-size:34px}}
 </style>
 </head>
 <body>
-<div class="toast" id="toast"></div>
+<div id="toast" class="toast"></div>
 <div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-icon">B</div>
-      <div>
-        <div class="brand-name">BETONOMANKA</div>
-        <div class="brand-sub">CS2 PREDICTIONS</div>
-      </div>
-    </div>
-    <div class="balance">
-      <div class="balance-label">ТВОЙ БАЛАНС</div>
-      <div class="balance-value"><span id="balance">100 000</span> ◈</div>
-    </div>
-  </header>
+<header class="top">
+  <div class="brand"><div class="brandicon">B</div><div><div class="brandname">BETONOMANKA</div><div class="sub">CS2 PREDICTIONS</div></div></div>
+  <div class="balance"><small>ТВОЙ БАЛАНС</small><strong id="balance">100 000 ◈</strong></div>
+</header>
 
-  <section class="hero">
-    <div class="eyebrow">PREDICT • COMPETE • WIN</div>
-    <h1>Твоя интуиция.<br>Твои прогнозы.</h1>
-    <p>Выбирай победителя матчей CS2, делай виртуальные ставки и проверяй своё чутьё.</p>
-    <div class="hero-stats">
-      <div class="stat"><strong>04</strong><span>МАТЧА</span></div>
-      <div class="stat"><strong>CS2</strong><span>DISCIPLINE</span></div>
-      <div class="stat"><strong>100K</strong><span>СТАРТОВЫЕ МОНЕТЫ</span></div>
-    </div>
-  </section>
+<section class="hero">
+  <div class="eyebrow">PREDICT • COMPETE • WIN</div>
+  <h1>Твоя интуиция.<br>Твои прогнозы.</h1>
+  <p>Выбирай победителей CS2, собирай экспрессы и проверяй своё чутьё на виртуальных монетах.</p>
+</section>
 
-  <main>
-    <section class="page active" id="page-matches">
-      <div class="section-head">
-        <h2>Матчи дня</h2><span class="live-pill">● VIRTUAL MODE</span>
-      </div>
-      <div class="filters">
-        <button class="filter active" data-filter="all">Все матчи</button>
-        <button class="filter" data-filter="selected">Мой выбор</button>
-      </div>
-      <div class="matches" id="matches"></div>
-
-      <div class="panel" id="bet-panel">
-        <h3>🎯 Твоя ставка</h3>
-        <div id="selection-text" style="font-size:12px;color:#b7a6c9;margin-bottom:15px">Выбери команду в карточке матча</div>
-        <label class="field-label" for="stake">Сумма виртуальных монет</label>
-        <input class="stake-input" id="stake" type="number" inputmode="numeric" min="1" step="1" placeholder="Например, 1000">
-        <div class="quick-stakes">
-          <button data-stake="100">100</button><button data-stake="500">500</button>
-          <button data-stake="1000">1 000</button><button data-stake="5000">5 000</button>
-          <button data-stake="max">MAX</button>
-        </div>
-        <div class="bet-summary"><span>Коэффициент</span><strong id="bet-odds">—</strong></div>
-        <div class="bet-summary"><span>Возможная выплата</span><strong class="potential" id="potential">—</strong></div>
-        <button class="primary" id="place-bet" disabled>Сделать виртуальную ставку</button>
-        <div class="notice">Это демоверсия на виртуальных монетах. Реальные деньги и реальные выплаты не используются. Коэффициенты указаны для демонстрации.</div>
-      </div>
-    </section>
-
-    <section class="page" id="page-history">
-      <div class="section-head"><h2>История ставок</h2></div>
-      <div class="panel" id="history-list"></div>
-    </section>
-
-    <section class="page" id="page-profile">
-      <div class="panel profile">
-        <div class="profile-avatar">B</div>
-        <h2>Игрок BETONOMANKA</h2>
-        <p>CS2 prediction enthusiast</p>
-        <div class="profile-grid">
-          <div class="profile-stat"><span>ТЕКУЩИЙ БАЛАНС</span><strong id="profile-balance">100 000</strong></div>
-          <div class="profile-stat"><span>ВСЕГО СТАВОК</span><strong id="total-bets">0</strong></div>
-          <div class="profile-stat"><span>В ИГРЕ</span><strong id="active-bets">0</strong></div>
-          <div class="profile-stat"><span>ПОТРАЧЕНО</span><strong id="total-staked">0</strong></div>
-        </div>
-        <button class="danger" id="reset">Сбросить баланс и историю</button>
-        <div class="notice">Данные сохраняются в памяти браузера на этом устройстве. Очистка данных сайта может сбросить прогресс.</div>
-      </div>
-    </section>
-  </main>
+<div class="tabs">
+  <button class="tab active" data-page="matches">⚡ Матчи</button>
+  <button class="tab" data-page="express">🎯 Экспресс <b id="coupon-count">0</b></button>
+  <button class="tab" data-page="history">▤ История</button>
+  <button class="tab" data-page="admin">🛠 Админ</button>
+  <button class="tab" data-page="profile">◉ Профиль</button>
 </div>
 
-<nav class="bottom-nav">
-  <div class="nav-inner">
-    <button class="nav-btn active" data-page="matches"><span class="nav-icon">⚡</span>Матчи</button>
-    <button class="nav-btn" data-page="history"><span class="nav-icon">▤</span>История</button>
-    <button class="nav-btn" data-page="profile"><span class="nav-icon">◉</span>Профиль</button>
+<section class="page active" id="page-matches">
+  <div class="sectionhead"><h2>Матчи дня</h2><span class="pill">VIRTUAL MODE</span></div>
+  <div id="matches" class="matches"></div>
+  <div class="panel">
+    <h3>🎯 Одиночная ставка</h3>
+    <div id="single-text" class="muted" style="margin-bottom:13px">Выбери коэффициент в карточке матча.</div>
+    <label class="label">Сумма виртуальных монет</label>
+    <input id="single-stake" class="input" type="number" min="1" step="1" placeholder="Например, 1000">
+    <div class="quick" data-target="single-stake">
+      <button data-amount="100">100</button><button data-amount="500">500</button><button data-amount="1000">1 000</button><button data-amount="5000">5 000</button><button data-amount="max">MAX</button>
+    </div>
+    <div class="rowline"><span>Коэффициент</span><strong id="single-odds">—</strong></div>
+    <div class="rowline"><span>Возможная выплата</span><strong class="green" id="single-return">—</strong></div>
+    <button class="primary" id="single-submit" disabled>Поставить на исход</button>
+    <p class="muted">Только виртуальные монеты. Результаты матчей в этой версии выставляются вручную в разделе «Админ».</p>
   </div>
-</nav>
+</section>
+
+<section class="page" id="page-express">
+  <div class="sectionhead"><h2>Купон экспресса</h2><span class="pill">MULTI</span></div>
+  <div class="panel">
+    <div id="coupon-items"></div>
+    <div class="rowline"><span>Событий в купоне</span><strong id="express-count">0</strong></div>
+    <div class="rowline"><span>Общий коэффициент</span><strong id="express-odds">—</strong></div>
+    <label class="label">Сумма виртуальных монет</label>
+    <input id="express-stake" class="input" type="number" min="1" step="1" placeholder="Например, 1000">
+    <div class="quick" data-target="express-stake">
+      <button data-amount="100">100</button><button data-amount="500">500</button><button data-amount="1000">1 000</button><button data-amount="5000">5 000</button><button data-amount="max">MAX</button>
+    </div>
+    <div class="rowline"><span>Возможная выплата</span><strong class="green" id="express-return">—</strong></div>
+    <button class="primary" id="express-submit" disabled>Поставить экспресс</button>
+    <button id="clear-coupon" class="danger">Очистить купон</button>
+    <p class="muted">Для выигрыша экспресса должны выиграть все выбранные исходы. Если хотя бы один проиграет — проигрывает весь экспресс.</p>
+  </div>
+</section>
+
+<section class="page" id="page-history">
+  <div class="sectionhead"><h2>История ставок</h2></div>
+  <div class="panel" id="history-list"></div>
+</section>
+
+<section class="page" id="page-admin">
+  <div class="sectionhead"><h2>Результаты матчей</h2></div>
+  <div class="panel">
+    <h3>🛠 Ручной расчёт</h3>
+    <p class="muted">Выбирай победителя после окончания матча. Все ожидающие ставки и экспрессы будут пересчитаны автоматически, когда известны результаты всех необходимых матчей.</p>
+    <div id="admin-list"></div>
+    <p class="muted">Важно: это демонстрационная админ-панель без пароля. Любой посетитель сайта может открыть её и менять результаты. Не используй для реальных денег или публичного рейтинга.</p>
+  </div>
+</section>
+
+<section class="page" id="page-profile">
+  <div class="panel profile">
+    <div class="avatar">B</div><h2>Игрок BETONOMANKA</h2><p class="muted">CS2 prediction enthusiast</p>
+    <div class="gridstats">
+      <div class="stat"><span>БАЛАНС</span><strong id="profile-balance">100 000</strong></div>
+      <div class="stat"><span>ВСЕГО СТАВОК</span><strong id="total-bets">0</strong></div>
+      <div class="stat"><span>ОЖИДАЮТ</span><strong id="active-bets">0</strong></div>
+      <div class="stat"><span>РАССЧИТАНО</span><strong id="settled-bets">0</strong></div>
+    </div>
+    <button id="reset" class="danger">Сбросить баланс и историю</button>
+    <p class="muted">Прогресс хранится в браузере на этом устройстве.</p>
+  </div>
+</section>
+</div>
+
+<nav class="nav"><div class="navinner">
+  <button class="active" data-page="matches"><span>⚡</span>Матчи</button>
+  <button data-page="express"><span>🎯</span>Экспресс</button>
+  <button data-page="history"><span>▤</span>История</button>
+  <button data-page="profile"><span>◉</span>Профиль</button>
+</div></nav>
 
 <script>
-const initialBalance = 100000;
-
-const games = [
-  {
-    id:"fut-nemiga", tournament:"CS2 • MATCH 01", time:"Предстоящий матч",
-    teams:[
-      {name:"FUT",short:"FUT",logo:"https://img-cdn.hltv.org/teamlogo/5d3bGzqD2L5aVv0w4YqP1X.png?ixlib=java-2.1.0&w=100&s=4e15d6b3e8d6b5a6"},
-      {name:"Nemiga",short:"N",logo:"https://img-cdn.hltv.org/teamlogo/3YxZK3G8v7Q7c3Q0xN2P3A.png?ixlib=java-2.1.0&w=100&s=0000000000000000"}
-    ],odds:[1.33,3.16]
-  },
-  {
-    id:"vitality-navi", tournament:"CS2 • MATCH 02", time:"Предстоящий матч",
-    teams:[
-      {name:"Vitality",short:"V",logo:"https://img-cdn.hltv.org/teamlogo/2q5cJ5a6L9v4w3X8n1K0bA.png?ixlib=java-2.1.0&w=100&s=0000000000000000"},
-      {name:"Natus Vincere",short:"NAVI",logo:"https://img-cdn.hltv.org/teamlogo/4n0pV9f7c3K2m6R8x1Y5bQ.png?ixlib=java-2.1.0&w=100&s=0000000000000000"}
-    ],odds:[1.30,3.25]
-  },
-  {
-    id:"mouz-aurora", tournament:"CS2 • MATCH 03", time:"Предстоящий матч",
-    teams:[
-      {name:"MOUZ",short:"M",logo:"https://img-cdn.hltv.org/teamlogo/6mOuz00000000000000000.png?ixlib=java-2.1.0&w=100&s=0000000000000000"},
-      {name:"Aurora",short:"A",logo:"https://img-cdn.hltv.org/teamlogo/7Aurora000000000000000.png?ixlib=java-2.1.0&w=100&s=0000000000000000"}
-    ],odds:[1.56,2.27]
-  },
-  {
-    id:"bb-furia", tournament:"CS2 • MATCH 04", time:"Предстоящий матч",
-    teams:[
-      {name:"BB Team",short:"BB",logo:"https://img-cdn.hltv.org/teamlogo/8BBTeam000000000000000.png?ixlib=java-2.1.0&w=100&s=0000000000000000"},
-      {name:"FURIA",short:"F",logo:"https://img-cdn.hltv.org/teamlogo/9Furia00000000000000000.png?ixlib=java-2.1.0&w=100&s=0000000000000000"}
-    ],odds:[2.38,1.51]
-  }
+"use strict";
+const START_BALANCE=100000;
+const games=[
+{id:"fut-nemiga",tournament:"CS2 • MATCH 01",teams:["FUT","Nemiga"],short:["FUT","N"],odds:[1.33,3.16]},
+{id:"vitality-navi",tournament:"CS2 • MATCH 02",teams:["Vitality","Natus Vincere"],short:["V","NAVI"],odds:[1.30,3.25]},
+{id:"mouz-aurora",tournament:"CS2 • MATCH 03",teams:["MOUZ","Aurora"],short:["M","A"],odds:[1.56,2.27]},
+{id:"bb-furia",tournament:"CS2 • MATCH 04",teams:["BB Team","FURIA"],short:["BB","F"],odds:[2.38,1.51]}
 ];
-
-const $ = id => document.getElementById(id);
-const fmt = n => Math.round(n).toLocaleString("ru-RU");
-function load(key, fallback){
-  try{
-    const raw=localStorage.getItem(key);
-    return raw===null?fallback:JSON.parse(raw);
-  }catch(e){return fallback}
-}
-let balance=load("bm_balance",initialBalance);
-let history=load("bm_history",[]);
-let selected=null;
-let filterMode="all";
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString("ru-RU");
+const money=n=>fmt(n)+" ◈";
+function read(key,fallback){try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v)}catch(e){return fallback}}
+let balance=read("bm2_balance",START_BALANCE);
+let bets=read("bm2_bets",[]);
+let results=read("bm2_results",{});
+let coupon=[];
+let single=null;
 let toastTimer;
-
-function save(){
-  try{
-    localStorage.setItem("bm_balance",JSON.stringify(balance));
-    localStorage.setItem("bm_history",JSON.stringify(history));
-  }catch(e){}
-}
-function showToast(message){
-  const el=$("toast");
-  el.textContent=message;
-  el.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove("show"),2400);
-}
-function getBet(gameId,side){
-  return history.find(b=>b.gameId===gameId && b.side===side && b.status==="active");
-}
-function renderLogo(team){
-  return `<img class="logo" src="${team.logo}" alt="${team.name}" onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;>${team.short}</div>'">`;
-}
+function save(){try{localStorage.setItem("bm2_balance",JSON.stringify(balance));localStorage.setItem("bm2_bets",JSON.stringify(bets));localStorage.setItem("bm2_results",JSON.stringify(results))}catch(e){}}
+function toast(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2300)}
+function gameById(id){return games.find(g=>g.id===id)}
+function selectionName(s){const g=gameById(s.gameId);return g?g.teams[s.side]:"Неизвестная команда"}
+function oddsFor(s){const g=gameById(s.gameId);return g?g.odds[s.side]:1}
+function matchName(id){const g=gameById(id);return g?g.teams.join(" — "):id}
+function activeOn(gameId,side){return bets.some(b=>b.status==="active"&&b.type==="single"&&b.selections[0].gameId===gameId&&b.selections[0].side===side)}
 function renderMatches(){
-  const list=$("matches");
-  let items=games;
-  if(filterMode==="selected"){
-    items=games.filter(g=>g.teams.some((t,i)=>getBet(g.id,i)));
-  }
-  if(!items.length){
-    list.innerHTML='<div class="empty">Ты пока не выбрал команды. Нажми на коэффициент в карточке матча.</div>';
-    return;
-  }
-  list.innerHTML=items.map(g=>{
-    const existing=history.find(b=>b.gameId===g.id&&b.status==="active");
-    return `<article class="match">
-      <div class="match-top"><span class="tournament">${g.tournament}</span><span class="match-status">${existing?"✓ Ставка сделана":"◷ Ожидается"}</span></div>
-      <div class="teams">
-        <div class="team">${renderLogo(g.teams[0])}<div class="team-name">${g.teams[0].name}</div></div>
-        <div class="vs">VS</div>
-        <div class="team">${renderLogo(g.teams[1])}<div class="team-name">${g.teams[1].name}</div></div>
-      </div>
-      <div class="odds">
-        ${g.teams.map((t,i)=>`<button data-game="${g.id}" data-side="${i}" class="${selected&&selected.gameId===g.id&&selected.side===i?"selected":""}">
-          <span>${t.short}</span><strong>${g.odds[i].toFixed(2)}</strong>
-        </button>`).join("")}
-      </div>
-      <div class="card-foot"><span>Победа команды</span><span>Виртуальные монеты ◈</span></div>
-    </article>`;
-  }).join("");
-  list.querySelectorAll("[data-game]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const game=games.find(g=>g.id===btn.dataset.game);
-      const side=Number(btn.dataset.side);
-      if(getBet(game.id,side)){
-        showToast("На этот исход у тебя уже есть ставка");
-        return;
-      }
-      selected={gameId:game.id,side};
-      renderMatches();
-      updateBetPanel();
-      $("bet-panel").scrollIntoView({behavior:"smooth",block:"nearest"});
-    });
-  });
+ $("matches").innerHTML=games.map(g=>{
+  const result=results[g.id];
+  return `<article class="match">
+   <div class="matchtop"><span class="tourney">${g.tournament}</span><span class="status">${result===undefined?"Ожидается":`Победитель: ${g.teams[result]}`}</span></div>
+   <div class="teams">
+    <div class="team"><div class="fallback">${g.short[0]}</div><div class="teamname">${g.teams[0]}</div></div>
+    <div class="vs">VS</div>
+    <div class="team"><div class="fallback">${g.short[1]}</div><div class="teamname">${g.teams[1]}</div></div>
+   </div>
+   <div class="odds">${g.teams.map((t,i)=>{
+    const s={gameId:g.id,side:i};
+    const chosen=single&&single.gameId===g.id&&single.side===i;
+    const inCoupon=coupon.some(c=>c.gameId===g.id&&c.side===i);
+    const disabled=result!==undefined||activeOn(g.id,i);
+    return `<button class="odd ${chosen||inCoupon?"selected":""}" data-game="${g.id}" data-side="${i}" ${disabled?"disabled":""}><span>${t}${inCoupon?" ✓":""}</span><strong>${g.odds[i].toFixed(2)}</strong></button>`;
+   }).join("")}</div>
+   <div class="cardfoot"><span>${result===undefined?"Выбери исход": "Матч рассчитан"}</span><span>${g.teams.some((_,i)=>activeOn(g.id,i))?"Есть одиночная ставка":"CS2"}</span></div>
+  </article>`;
+ }).join("");
+ $("matches").querySelectorAll("[data-game]").forEach(btn=>btn.addEventListener("click",()=>{
+  const s={gameId:btn.dataset.game,side:Number(btn.dataset.side)};
+  if(results[s.gameId]!==undefined){toast("Этот матч уже рассчитан");return}
+  const exists=coupon.findIndex(c=>c.gameId===s.gameId);
+  if(exists>=0){
+   if(coupon[exists].side===s.side){coupon.splice(exists,1)}else{coupon[exists]=s}
+  }else{coupon.push(s)}
+  single=s;renderMatches();updateSingle();updateCoupon();
+ }));
 }
 function updateBalance(){
-  $("balance").textContent=fmt(balance);
-  $("profile-balance").textContent=fmt(balance);
-  $("total-bets").textContent=history.length;
-  $("active-bets").textContent=history.filter(b=>b.status==="active").length;
-  $("total-staked").textContent=fmt(history.reduce((sum,b)=>sum+b.stake,0));
+ $("balance").textContent=money(balance);$("profile-balance").textContent=fmt(balance);
+ $("total-bets").textContent=bets.length;
+ $("active-bets").textContent=bets.filter(b=>b.status==="active").length;
+ $("settled-bets").textContent=bets.filter(b=>b.status!=="active").length;
+ $("coupon-count").textContent=coupon.length;
 }
-function updateBetPanel(){
-  const text=$("selection-text");
-  const odds=$("bet-odds");
-  const potential=$("potential");
-  const btn=$("place-bet");
-  if(!selected){
-    text.textContent="Выбери команду в карточке матча";
-    odds.textContent="—";potential.textContent="—";btn.disabled=true;
-    return;
-  }
-  const g=games.find(x=>x.id===selected.gameId);
-  const team=g.teams[selected.side];
-  text.textContent=`${team.name} победит в матче`;
-  odds.textContent=g.odds[selected.side].toFixed(2);
-  const amount=Number($("stake").value);
-  potential.textContent=amount>0?fmt(amount*g.odds[selected.side])+" ◈":"—";
-  btn.disabled=!(Number.isInteger(amount)&&amount>0&&amount<=balance);
+function updateSingle(){
+ const text=$("single-text"),odds=$("single-odds"),ret=$("single-return"),btn=$("single-submit"),stake=Number($("single-stake").value);
+ if(!single){text.textContent="Выбери коэффициент в карточке матча.";odds.textContent="—";ret.textContent="—";btn.disabled=true;return}
+ const g=gameById(single.gameId);
+ text.textContent=matchName(g.id)+" · Победа "+g.teams[single.side];
+ odds.textContent=g.odds[single.side].toFixed(2);
+ ret.textContent=stake>0?money(stake*g.odds[single.side]):"—";
+ btn.disabled=!(Number.isInteger(stake)&&stake>0&&stake<=balance&&results[g.id]===undefined);
 }
-function placeBet(){
-  if(!selected)return;
-  const stake=Number($("stake").value);
-  if(!Number.isInteger(stake)||stake<1){showToast("Введи целую сумму больше нуля");return}
-  if(stake>balance){showToast("Недостаточно виртуальных монет");return}
-  const g=games.find(x=>x.id===selected.gameId);
-  if(getBet(g.id,selected.side)){showToast("На этот исход уже поставлено");return}
-  history.unshift({
-    id:Date.now(),gameId:g.id,match:g.teams[0].name+" — "+g.teams[1].name,
-    team:g.teams[selected.side].name,side:selected.side,odds:g.odds[selected.side],
-    stake,possible:stake*g.odds[selected.side],status:"active",date:new Date().toLocaleString("ru-RU")
-  });
-  balance-=stake;
-  selected=null;
-  $("stake").value="";
-  save();renderAll();
-  showToast("Виртуальная ставка принята!");
+function couponOdds(){return coupon.reduce((total,s)=>total*oddsFor(s),1)}
+function updateCoupon(){
+ $("coupon-count").textContent=coupon.length;
+ $("express-count").textContent=coupon.length;
+ $("coupon-items").innerHTML=coupon.length?coupon.map((s,i)=>`
+ <div class="selection"><div class="selrow"><strong>${matchName(s.gameId)}</strong><button data-remove="${i}" aria-label="Удалить">×</button></div>
+ <div class="selrow" style="margin-top:7px"><span>${selectionName(s)}</span><strong style="color:#d8b5ff">x${oddsFor(s).toFixed(2)}</strong></div></div>`).join(""):'<div class="empty">Купон пуст.<br>Добавь исходы в разделе «Матчи».</div>';
+ $("coupon-items").querySelectorAll("[data-remove]").forEach(btn=>btn.addEventListener("click",()=>{coupon.splice(Number(btn.dataset.remove),1);renderMatches();updateCoupon()}));
+ const total=couponOdds(),stake=Number($("express-stake").value);
+ $("express-odds").textContent=coupon.length?total.toFixed(2):"—";
+ $("express-return").textContent=coupon.length&&stake>0?money(stake*total):"—";
+ $("express-submit").disabled=!(coupon.length>=2&&Number.isInteger(stake)&&stake>0&&stake<=balance&&coupon.every(s=>results[s.gameId]===undefined));
+}
+function placeSingle(){
+ const stake=Number($("single-stake").value);
+ if(!single||!Number.isInteger(stake)||stake<1||stake>balance){toast("Проверь исход и сумму");return}
+ if(results[single.gameId]!==undefined||activeOn(single.gameId,single.side)){toast("Нельзя поставить на этот исход");return}
+ const g=gameById(single.gameId);
+ bets.unshift({id:Date.now()+Math.random(),type:"single",selections:[{...single}],stake,odds:g.odds[single.side],possible:stake*g.odds[single.side],status:"active",date:new Date().toLocaleString("ru-RU")});
+ balance-=stake;save();renderAll();toast("Одиночная ставка принята!");
+}
+function placeExpress(){
+ const stake=Number($("express-stake").value);
+ if(coupon.length<2||!Number.isInteger(stake)||stake<1||stake>balance){toast("Нужно минимум 2 исхода и корректная сумма");return}
+ if(coupon.some(s=>results[s.gameId]!==undefined)){toast("Убери уже рассчитанные матчи");return}
+ const selections=coupon.map(s=>({...s}));
+ const total=selections.reduce((a,s)=>a*oddsFor(s),1);
+ bets.unshift({id:Date.now()+Math.random(),type:"express",selections,stake,odds:total,possible:stake*total,status:"active",date:new Date().toLocaleString("ru-RU")});
+ balance-=stake;coupon=[];$("express-stake").value="";save();renderAll();toast("Экспресс принят!");
+}
+function settleBets(){
+ let changed=false;
+ for(const b of bets){
+  if(b.status!=="active")continue;
+  if(!b.selections.every(s=>results[s.gameId]!==undefined))continue;
+  const won=b.selections.every(s=>results[s.gameId]===s.side);
+  b.status=won?"won":"lost";b.settledAt=new Date().toLocaleString("ru-RU");
+  if(won){balance+=Math.round(b.possible);b.paid=Math.round(b.possible)}
+  changed=true;
+ }
+ if(changed){save();toast("Результаты ставок обновлены")}
+}
+function renderAdmin(){
+ $("admin-list").innerHTML=games.map(g=>{
+  const r=results[g.id];
+  return `<div class="selection"><div class="selrow"><strong>${g.teams[0]} — ${g.teams[1]}</strong><span class="selmeta">${r===undefined?"Ожидает результата":"Рассчитан"}</span></div>
+  <div class="resultbtns">
+   <button data-result="${g.id}" data-winner="0" ${r!==undefined?"disabled":""}>${g.teams[0]} победил</button>
+   <button data-result="${g.id}" data-winner="1" ${r!==undefined?"disabled":""}>${g.teams[1]} победила</button>
+   ${r!==undefined?`<button data-undo="${g.id}">Сбросить</button>`:""}
+  </div></div>`;
+ }).join("");
+ $("admin-list").querySelectorAll("[data-result]").forEach(btn=>btn.addEventListener("click",()=>{
+  if(results[btn.dataset.result]!==undefined)return;
+  results[btn.dataset.result]=Number(btn.dataset.winner);
+  settleBets();save();renderAll();toast("Результат сохранён");
+ }));
+ $("admin-list").querySelectorAll("[data-undo]").forEach(btn=>btn.addEventListener("click",()=>{
+  const id=btn.dataset.undo;
+  if(!confirm("Сбросить результат матча? Это не отменит уже рассчитанные ставки корректно. Лучше использовать только до расчёта."))return;
+  delete results[id];save();renderAll();toast("Результат удалён. Проверь историю вручную.");
+ }));
 }
 function renderHistory(){
-  const box=$("history-list");
-  if(!history.length){
-    box.innerHTML='<div class="empty">История пока пуста.<br>Сделай первую виртуальную ставку!</div>';
-    return;
-  }
-  box.innerHTML=history.map(b=>`
-    <div class="history-item">
-      <div><div class="history-title">${b.match}</div>
-      <div class="history-meta">Выбор: ${b.team} · x${b.odds.toFixed(2)}</div>
-      <div class="history-meta">${b.date}</div></div>
-      <div class="history-amount">${fmt(b.stake)} ◈<div class="history-meta">${b.status==="active"?"Ожидает результата":b.status}</div></div>
-    </div>`).join("");
+ const box=$("history-list");
+ if(!bets.length){box.innerHTML='<div class="empty">Ставок пока нет. Собери свой первый купон!</div>';return}
+ box.innerHTML=bets.map(b=>{
+  const names=b.selections.map(s=>`${matchName(s.gameId)}: ${selectionName(s)}`).join("<br>");
+  const status=b.status==="active"?"Ожидает":b.status==="won"?"Выигрыш":"Проигрыш";
+  const color=b.status==="won"?"green":b.status==="lost"?"color:#ff779a":"";
+  return `<div class="historyitem"><div><strong>${b.type==="express"?"🎯 Экспресс":"⚡ Одиночная"}</strong><div class="historymeta" style="line-height:1.6;margin-top:6px">${names}</div><div class="historymeta">${b.date}</div><div class="historymeta">Коэффициент x${b.odds.toFixed(2)} · ${status}</div></div>
+  <div class="amount">${money(b.stake)}<div class="historymeta">${b.status==="active"?"В игре":b.status==="won"?"+"+money(b.paid):"−"+money(b.stake)}</div></div></div>`;
+ }).join("");
 }
-function renderAll(){
-  updateBalance();renderMatches();updateBetPanel();renderHistory();
-}
-$("stake").addEventListener("input",updateBetPanel);
-$("place-bet").addEventListener("click",placeBet);
-document.querySelectorAll("[data-stake]").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    $("stake").value=btn.dataset.stake==="max"?balance:btn.dataset.stake;
-    updateBetPanel();
-  });
-});
-document.querySelectorAll("[data-filter]").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    filterMode=btn.dataset.filter;
-    document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===btn));
-    renderMatches();
-  });
-});
-document.querySelectorAll("[data-page]").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    $("page-"+btn.dataset.page).classList.add("active");
-    document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x===btn));
-    if(btn.dataset.page==="history")renderHistory();
-    window.scrollTo({top:0,behavior:"smooth"});
-  });
-});
+function renderAll(){updateBalance();renderMatches();updateSingle();updateCoupon();renderHistory();renderAdmin()}
+document.querySelectorAll("[data-page]").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ $("page-"+btn.dataset.page).classList.add("active");
+ document.querySelectorAll(".tab,.nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===btn.dataset.page));
+ window.scrollTo({top:0,behavior:"smooth"});
+}));
+document.querySelectorAll("[data-amount]").forEach(btn=>btn.addEventListener("click",()=>{
+ const input=$(btn.closest(".quick").dataset.target);
+ input.value=btn.dataset.amount==="max"?balance:btn.dataset.amount;
+ input.dispatchEvent(new Event("input",{bubbles:true}));
+}));
+$("single-stake").addEventListener("input",updateSingle);
+$("express-stake").addEventListener("input",updateCoupon);
+$("single-submit").addEventListener("click",placeSingle);
+$("express-submit").addEventListener("click",placeExpress);
+$("clear-coupon").addEventListener("click",()=>{coupon=[];renderMatches();updateCoupon();toast("Купон очищен")});
 $("reset").addEventListener("click",()=>{
-  if(!confirm("Сбросить баланс до 100 000 и удалить историю ставок?"))return;
-  balance=initialBalance;history=[];selected=null;save();renderAll();
-  showToast("Прогресс сброшен");
+ if(!confirm("Сбросить баланс и удалить все ставки и результаты?"))return;
+ balance=START_BALANCE;bets=[];results={};coupon=[];single=null;
+ save();renderAll();toast("Данные сброшены");
 });
 renderAll();
 </script>
 </body>
 </html>
+
 
 
