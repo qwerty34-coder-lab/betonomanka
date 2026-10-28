@@ -7,76 +7,151 @@
 /* Обновлённый дизайн экспресса — CSS находится внутри style */
 #page-express{--express-purple:#a56aff;--express-border:#35244e}#page-express .layout{grid-template-columns:minmax(0,1fr) 320px;align-items:start;gap:18px}#page-express .panel{background:linear-gradient(145deg,#191229,#100b1b);border:1px solid #392650;border-radius:20px;padding:20px;box-shadow:0 10px 35px #0002}#page-express h2{font-size:23px;letter-spacing:-.5px}#page-express .match{background:#100c19;border:1px solid #30213f;border-radius:15px;padding:15px;margin-top:12px;transition:border-color .2s,transform .2s}#page-express .match:has(.odd.selected){border-color:#8750d7;box-shadow:0 0 18px #914dff12}#page-express .teams{font-size:16px;margin-bottom:12px}#page-express .odds{gap:10px}#page-express .odd{min-height:66px;background:#211832;border:1px solid #38264f;border-radius:12px;transition:all .18s ease}#page-express .odd span{display:block;color:#c0b1d4;font-size:13px;margin-bottom:4px}#page-express .odd b{font-size:18px;color:#d4b5ff}#page-express .odd.selected{background:linear-gradient(135deg,#6333a4,#8e4ee0);border-color:#c59aff;box-shadow:0 0 16px #9b5cff35}#page-express .odd.selected span,#page-express .odd.selected b{color:#fff}#page-express aside.panel{position:sticky;top:14px;background:radial-gradient(ellipse at top right,#42206555,transparent 55%),linear-gradient(160deg,#201431,#110c1c);border-color:#63408a}#page-express #express-count{display:inline-block;padding:7px 10px;background:#2b1b40;border:1px solid #4b3268;border-radius:9px;color:#d8c0ff;font-size:13px}#page-express #express-odds{margin:17px 0;font-size:23px;color:#d4b0ff;overflow-wrap:anywhere}#page-express #express-stake{margin-top:8px;background:#100b19;border:1px solid #50376d;border-radius:12px;padding:14px;font-size:17px}#page-express #express-return{margin:12px 0 16px;padding:13px;border-radius:12px;background:#18271f;border:1px solid #28543c;color:#72e4a7;font-weight:700;line-height:1.6}#page-express .primary{min-height:48px;border-radius:12px;background:linear-gradient(100deg,#7135c0,#a45cff);box-shadow:0 5px 18px #8b48db30}#page-express .primary:active{transform:scale(.98)}#page-express .secondary{border-radius:12px;min-height:44px}@media(max-width:720px){.app{padding:12px}.layout{grid-template-columns:1fr}.brand{font-size:19px}.balance strong{font-size:17px}.panel{padding:14px}#page-express .layout{grid-template-columns:minmax(0,1fr)}#page-express .panel{padding:14px}#page-express aside.panel{position:static}#page-express #express-odds{font-size:21px}#page-express .match{padding:12px}}
 
-/* FIX: BETONOMANKA EXPRESS DESIGN */
+/* BETONOMANKA — BOOKMAKER EXPRESS */
+
+#page-express {
+  color: #f5f0ff;
+}
+
 #page-express .layout {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 320px !important;
-  gap: 18px !important;
+  grid-template-columns: minmax(0, 1fr) 330px !important;
+  gap: 22px !important;
   align-items: start !important;
 }
 
 #page-express .panel {
-  background: linear-gradient(145deg, #191229, #100b1b) !important;
-  border: 1px solid #50336d !important;
-  border-radius: 20px !important;
+  background: #171320 !important;
+  border: 1px solid #30243e !important;
+  border-radius: 18px !important;
   padding: 20px !important;
+  box-shadow: 0 8px 28px #00000022 !important;
 }
 
 #page-express .match {
-  background: #100c19 !important;
-  border: 1px solid #392650 !important;
-  border-radius: 15px !important;
-  padding: 15px !important;
-  margin-top: 12px !important;
+  position: relative;
+  background: #201a2b !important;
+  border: 1px solid #382b49 !important;
+  border-radius: 14px !important;
+  padding: 18px !important;
+  margin-top: 14px !important;
+  transition: border-color .2s, background .2s;
+}
+
+#page-express .match:hover {
+  border-color: #8050b7 !important;
+  background: #251c33 !important;
 }
 
 #page-express .odd {
-  min-height: 66px !important;
-  background: #211832 !important;
-  border: 1px solid #50376d !important;
-  border-radius: 12px !important;
+  min-height: 58px !important;
+  background: #2b2338 !important;
+  border: 1px solid #40314f !important;
+  border-radius: 10px !important;
+  padding: 12px !important;
+  transition: all .18s ease !important;
+}
+
+#page-express .odd:hover {
+  background: #39294c !important;
+  border-color: #9361c7 !important;
+}
+
+#page-express .odd b,
+#page-express .odd span {
+  color: #e6d9f6;
 }
 
 #page-express .odd.selected {
-  background: linear-gradient(135deg, #6333a4, #a45cff) !important;
-  border-color: #d4b5ff !important;
-  box-shadow: 0 0 16px #9b5cff55 !important;
+  background: linear-gradient(135deg, #7138b8, #9855e8) !important;
+  border: 1px solid #c49aff !important;
+  box-shadow: 0 0 0 2px #9855e822 !important;
 }
 
-#page-express .odd.selected span,
-#page-express .odd.selected b {
-  color: white !important;
+#page-express .odd.selected b,
+#page-express .odd.selected span {
+  color: #ffffff !important;
 }
 
 #page-express #express-odds {
-  color: #d4b0ff !important;
-  font-size: 23px !important;
-  margin: 18px 0 !important;
+  display: block;
+  color: #c69aff !important;
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  margin: 16px 0 !important;
 }
 
 #page-express #express-return {
-  background: #18271f !important;
-  border: 1px solid #28543c !important;
+  display: block;
+  background: #172c24 !important;
+  border: 1px solid #285a40 !important;
   border-radius: 12px !important;
-  padding: 14px !important;
-  color: #72e4a7 !important;
-  font-weight: 700 !important;
-  margin: 12px 0 16px !important;
+  padding: 16px !important;
+  color: #75edac !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  margin: 14px 0 !important;
+}
+
+#page-express input,
+#page-express select {
+  background: #100d17 !important;
+  color: #ffffff !important;
+  border: 1px solid #49365e !important;
+  border-radius: 10px !important;
+  padding: 13px !important;
+  max-width: 100%;
+}
+
+#page-express input:focus {
+  outline: none;
+  border-color: #a66bea !important;
+  box-shadow: 0 0 0 3px #a66bea22;
 }
 
 #page-express .primary {
-  background: linear-gradient(100deg, #7135c0, #a45cff) !important;
+  background: linear-gradient(110deg, #743bc1, #a15aef) !important;
+  color: #ffffff !important;
+  border: none !important;
   border-radius: 12px !important;
   min-height: 48px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 5px 18px #843bd933 !important;
+  transition: transform .15s, filter .15s;
+}
+
+#page-express .primary:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+#page-express button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
 }
 
 @media (max-width: 720px) {
   #page-express .layout {
     grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
   }
 
   #page-express .panel {
     padding: 14px !important;
+    border-radius: 15px !important;
+  }
+
+  #page-express .match {
+    padding: 13px !important;
+  }
+
+  #page-express .odd {
+    min-height: 52px !important;
+    padding: 10px 7px !important;
+  }
+
+  #page-express #express-odds {
+    font-size: 25px !important;
   }
 }
 </style></head>
