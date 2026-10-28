@@ -178,6 +178,264 @@ button { cursor:pointer; font:inherit; }
  </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<script>
+const games = [
+  { id: 1, a: "FUT", b: "Nemiga", oa: 1.33, ob: 3.16 },
+  { id: 2, a: "Vitality", b: "Natus Vincere", oa: 1.30, ob: 3.25 },
+  { id: 3, a: "MOUZ", b: "Aurora", oa: 1.56, ob: 2.27 },
+  { id: 4, a: "BB Team", b: "FURIA", oa: 2.38, ob: 1.51 }
+];
+
+const BALANCE_KEY = "betonomanka_balance_v2";
+const BETS_KEY = "betonomanka_bets_v2";
+
+let balance = Number(localStorage.getItem(BALANCE_KEY));
+if (!Number.isFinite(balance) || balance < 0) balance = 100000;
+
+let bets = [];
+try {
+  bets = JSON.parse(localStorage.getItem(BETS_KEY) || "[]");
+  if (!Array.isArray(bets)) bets = [];
+} catch {
+  bets = [];
+}
+
+let selectedGame = null;
+let selectedTeam = "";
+let selectedOdds = 0;
+let currentTab = "matches";
+
+const $ = id => document.getElementById(id);
+const money = n => Math.round(n).toLocaleString("ru-RU");
+
+function save() {
+  localStorage.setItem(BALANCE_KEY, String(balance));
+  localStorage.setItem(BETS_KEY, JSON.stringify(bets));
+}
+
+function toast(message) {
+  const el = $("toast");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => el.classList.remove("show"), 2300);
+}
+
+function renderBalance() {
+  if ($("balance")) $("balance").textContent = money(balance);
+  if ($("pb")) $("pb").textContent = money(balance);
+  if ($("bc")) $("bc").textContent = bets.length;
+  if ($("count")) $("count").textContent = bets.length;
+  if ($("staked")) {
+    $("staked").textContent = money(
+      bets.reduce((sum, bet) => sum + bet.stake, 0)
+    );
+  }
+  if ($("totalPotential")) {
+    $("totalPotential").textContent = money(
+      bets.filter(b => b.status === "active")
+          .reduce((sum, bet) => sum + bet.potential, 0)
+    );
+  }
+}
+
+function drawMatches() {
+  const container = $("matches");
+  if (!container) return;
+
+  container.innerHTML = games.map(game => `
+    <div class="match-card">
+      <div class="match-top">
+        <span class="match-tag">CS2 · Матч ${game.id}</span>
+        <span class="live-dot">● Предматч</span>
+      </div>
+      <div class="teams">
+        <div class="team">
+          <div class="team-logo">${game.a.slice(0, 2)}</div>
+          <div class="team-name">${game.a}</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <div class="team-logo">${game.b.slice(0, 2)}</div>
+          <div class="team-name">${game.b}</div>
+        </div>
+      </div>
+      <div class="odds">
+        <button class="odd" onclick="openBet(${game.id}, 'a')">
+          <span>${game.a}</span><b>${game.oa.toFixed(2)}</b>
+        </button>
+        <button class="odd" onclick="openBet(${game.id}, 'b')">
+          <span>${game.b}</span><b>${game.ob.toFixed(2)}</b>
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function openBet(id, side) {
+  selectedGame = games.find(g => g.id === id);
+  if (!selectedGame) return;
+
+  selectedTeam = side === "a" ? selectedGame.a : selectedGame.b;
+  selectedOdds = side === "a" ? selectedGame.oa : selectedGame.ob;
+
+  if ($("pickteam")) $("pickteam").textContent = selectedTeam;
+  if ($("pickodds")) $("pickodds").textContent = selectedOdds.toFixed(2);
+  if ($("stake")) $("stake").value = "100";
+  calc();
+
+  if ($("modalbg")) $("modalbg").classList.add("open");
+}
+
+function closeModal() {
+  if ($("modalbg")) $("modalbg").classList.remove("open");
+}
+
+function calc() {
+  const stake = Number($("stake")?.value || 0);
+  if ($("pay")) {
+    $("pay").textContent =
+      stake > 0 && selectedOdds > 0
+        ? money(stake * selectedOdds)
+        : "0";
+  }
+}
+
+function place() {
+  const stake = Math.floor(Number($("stake")?.value || 0));
+
+  if (!selectedGame || !selectedTeam) {
+    toast("Сначала выбери матч");
+    return;
+  }
+  if (!Number.isFinite(stake) || stake <= 0) {
+    toast("Введи сумму больше нуля");
+    return;
+  }
+  if (stake > balance) {
+    toast("Недостаточно монет");
+    return;
+  }
+
+  balance -= stake;
+  bets.unshift({
+    id: Date.now(),
+    gameId: selectedGame.id,
+    match: selectedGame.a + " — " + selectedGame.b,
+    team: selectedTeam,
+    odds: selectedOdds,
+    stake: stake,
+    potential: Math.round(stake * selectedOdds),
+    status: "active",
+    created: new Date().toLocaleString("ru-RU")
+  });
+
+  save();
+  renderBalance();
+  drawBets();
+  drawProfile();
+  closeModal();
+  toast("Ставка принята! Удачи 💜");
+}
+
+function drawBets() {
+  const container = $("bets");
+  if (!container) return;
+
+  if (!bets.length) {
+    container.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🎯</div>
+        <h3>Пока нет ставок</h3>
+        <p>Выбери матч и сделай первую виртуальную ставку.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = bets.map(bet => `
+    <div class="bet-card">
+      <div class="bet-head">
+        <span>${bet.match}</span>
+        <span class="bet-status">${bet.status === "active" ? "АКТИВНА" : bet.status === "won" ? "ВЫИГРЫШ" : "ПРОИГРЫШ"}</span>
+      </div>
+      <div class="bet-pick">Выбор: <b>${bet.team}</b></div>
+      <div class="bet-info">
+        <span>Коэффициент <b>${bet.odds.toFixed(2)}</b></span>
+        <span>Ставка <b>${money(bet.stake)}</b></span>
+      </div>
+      <div class="bet-potential">
+        Потенциальная выплата: <b>${money(bet.potential)}</b> монет
+      </div>
+      <div class="bet-date">${bet.created}</div>
+    </div>
+  `).join("");
+}
+
+function drawProfile() {
+  if ($("np")) $("np").textContent = bets.length;
+  if ($("nb")) $("nb").textContent = bets.filter(b => b.status === "won").length;
+  if ($("nm")) $("nm").textContent = money(balance);
+}
+
+function tab(name) {
+  currentTab = name;
+
+  const panels = {
+    matches: "matchesPanel",
+    bets: "betsPanel",
+    profile: "profilePanel"
+  };
+
+  Object.entries(panels).forEach(([key, id]) => {
+    const panel = $(id);
+    if (panel) panel.style.display = key === name ? "" : "none";
+  });
+
+  document.querySelectorAll("[data-tab]").forEach(el => {
+    el.classList.toggle("active", el.dataset.tab === name);
+  });
+
+  if (name === "bets") drawBets();
+  if (name === "profile") drawProfile();
+}
+
+function resetDemo() {
+  if (!confirm("Сбросить баланс до 100 000 монет и удалить историю ставок?")) {
+    return;
+  }
+  balance = 100000;
+  bets = [];
+  save();
+  renderBalance();
+  drawBets();
+  drawProfile();
+  toast("Демо-баланс восстановлен");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  drawMatches();
+  drawBets();
+  drawProfile();
+  renderBalance();
+
+  document.querySelectorAll("[data-tab]").forEach(el => {
+    el.addEventListener("click", () => tab(el.dataset.tab));
+  });
+
+  if ($("stake")) $("stake").addEventListener("input", calc);
+  if ($("confirm")) $("confirm").addEventListener("click", place);
+
+  if ($("modalbg")) {
+    $("modalbg").addEventListener("click", event => {
+      if (event.target === $("modalbg")) closeModal();
+    });
+  }
+
+  tab("matches");
+});
+</script>
 </body>
 </html>
 
