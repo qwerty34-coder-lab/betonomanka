@@ -54,13 +54,18 @@ button{font:inherit;cursor:pointer;color:inherit;border:0}.app{max-width:560px;m
 <div class="modal-back" id="modalBack" onclick="if(event.target===this)closeModal()"><div class="modal"><h3 id="modalTitle">Сделать ставку</h3><p id="modalDesc" class="muted" style="font-size:13px"></p><input class="field" id="stakeInput" type="number" inputmode="numeric" min="1" value="100" aria-label="Сумма ставки"><div class="quick"><button onclick="setStake(50)">50</button><button onclick="setStake(100)">100</button><button onclick="setStake(250)">250</button><button onclick="setStake(500)">500</button></div><div style="display:flex;justify-content:space-between;margin-top:16px;font-size:13px"><span class="muted">Потенциальный выигрыш</span><strong id="potential">185 коинов</strong></div><div class="modal-actions"><button class="secondary" onclick="closeModal()">Отмена</button><button class="primary" onclick="placeBet()">Подтвердить</button></div><div class="notice">Только виртуальные коины. Реальные деньги не используются.</div></div></div>
 <div class="toast" id="toast"></div>
 <script>
+
 const matches=[
-{id:1,sport:'CS2',time:'Сегодня · 19:00',a:'NAVI',b:'G2',icons:['🟡','⚪'],odds:[1.85,3.40,3.75],labels:['1','X','2'],hot:true},
-{id:2,sport:'Футбол',time:'Сегодня · 21:45',a:'Real Madrid',b:'Barcelona',icons:['⚪','🔴🔵'],odds:[2.10,3.60,3.25],labels:['1','X','2'],hot:false},
-{id:3,sport:'CS2',time:'Завтра · 16:00',a:'FaZe',b:'Vitality',icons:['🔴','🐝'],odds:[1.65,3.80,4.20],labels:['1','X','2'],hot:false},
-{id:4,sport:'Футбол',time:'Завтра · 22:00',a:'Man City',b:'Arsenal',icons:['🔵','🔴'],odds:[1.55,4.50,5.80],labels:['1','X','2'],hot:true}
+  {id:1,sport:'CS2',time:'Сегодня · 10:00',a:'FUT',b:'Nemiga',icons:['🔴','⚫'],odds:[1.33,3.16],labels:['1','2'],hot:true},
+  {id:2,sport:'CS2',time:'Сегодня · 13:00',a:'Vitality',b:'Natus Vincere',icons:['🐝','🟡'],odds:[1.30,3.25],labels:['1','2'],hot:true},
+  {id:3,sport:'CS2',time:'Сегодня · 16:00',a:'MOUZ',b:'Aurora',icons:['🐭','🌌'],odds:[1.56,2.27],labels:['1','2'],hot:false},
+  {id:4,sport:'CS2',time:'Сегодня · 19:00',a:'BB Team',b:'FURIA',icons:['⚫','🐆'],odds:[2.38,1.51],labels:['1','2'],hot:true}
 ];
-let balance=Number(localStorage.getItem('betonomanka_balance')||1000), bets=JSON.parse(localStorage.getItem('betonomanka_bets')||'[]'), selected=null, filter='all';
+
+];
+
+let balance=Number(localStorage.getItem('betonomanka_balance')||100000), bets=JSON.parse(localStorage.getItem('betonomanka_bets')||'[]'), selected=null, filter='all';
+
 const fmt=n=>Math.round(n).toLocaleString('ru-RU');
 function persist(){localStorage.setItem('betonomanka_balance',balance);localStorage.setItem('betonomanka_bets',JSON.stringify(bets));renderStats()}
 function matchCard(m){return `<article class="match"><div class="match-top"><span>◈ ${m.sport} · ${m.time}</span><span>${m.hot?'<span class="tag">✦ ТОП</span>':'<span class="live-dot">↗ +8%</span>'}</span></div><div class="teams"><div class="team"><div class="crest">${m.icons[0]}</div>${m.a}</div><div class="vs">VS</div><div class="team"><div class="crest">${m.icons[1]}</div>${m.b}</div></div><div class="odds">${m.odds.map((o,i)=>`<button class="odd" onclick="openBet(${m.id},${i})"><span>${m.labels[i]}</span><b>${o.toFixed(2)}</b></button>`).join('')}</div></article>`}
