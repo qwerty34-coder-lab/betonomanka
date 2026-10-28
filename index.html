@@ -6,6 +6,169 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b0812">
 <title>BETONOMANKA — CS2</title>
+
+/* BETONOMANKA — новый дизайн экспресса */
+#page-express {
+  --express-purple: #a56aff;
+  --express-border: #35244e;
+}
+
+#page-express .layout {
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+  gap: 18px;
+}
+
+#page-express .panel {
+  background: linear-gradient(145deg, #191229, #100b1b);
+  border: 1px solid #392650;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 35px #0002;
+}
+
+#page-express h2 {
+  font-size: 23px;
+  letter-spacing: -.5px;
+}
+
+#page-express .match {
+  background: #100c19;
+  border: 1px solid #30213f;
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 12px;
+  transition: border-color .2s, transform .2s;
+}
+
+#page-express .match:has(.odd.selected) {
+  border-color: #8750d7;
+  box-shadow: 0 0 18px #914dff12;
+}
+
+#page-express .teams {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+#page-express .odds {
+  gap: 10px;
+}
+
+#page-express .odd {
+  min-height: 66px;
+  background: #211832;
+  border: 1px solid #38264f;
+  border-radius: 12px;
+  transition: all .18s ease;
+}
+
+#page-express .odd span {
+  display: block;
+  color: #c0b1d4;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+#page-express .odd b {
+  font-size: 18px;
+  color: #d4b5ff;
+}
+
+#page-express .odd.selected {
+  background: linear-gradient(135deg, #6333a4, #8e4ee0);
+  border-color: #c59aff;
+  box-shadow: 0 0 16px #9b5cff35;
+}
+
+#page-express .odd.selected span,
+#page-express .odd.selected b {
+  color: #fff;
+}
+
+#page-express aside.panel {
+  position: sticky;
+  top: 14px;
+  background:
+    radial-gradient(ellipse at top right, #42206555, transparent 55%),
+    linear-gradient(160deg, #201431, #110c1c);
+  border-color: #63408a;
+}
+
+#page-express #express-count {
+  display: inline-block;
+  padding: 7px 10px;
+  background: #2b1b40;
+  border: 1px solid #4b3268;
+  border-radius: 9px;
+  color: #d8c0ff;
+  font-size: 13px;
+}
+
+#page-express #express-odds {
+  margin: 17px 0;
+  font-size: 23px;
+  color: #d4b0ff;
+  overflow-wrap: anywhere;
+}
+
+#page-express #express-stake {
+  margin-top: 8px;
+  background: #100b19;
+  border: 1px solid #50376d;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 17px;
+}
+
+#page-express #express-return {
+  margin: 12px 0 16px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #18271f;
+  border: 1px solid #28543c;
+  color: #72e4a7;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+#page-express .primary {
+  min-height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(100deg, #7135c0, #a45cff);
+  box-shadow: 0 5px 18px #8b48db30;
+}
+
+#page-express .primary:active {
+  transform: scale(.98);
+}
+
+#page-express .secondary {
+  border-radius: 12px;
+  min-height: 44px;
+}
+
+@media (max-width: 720px) {
+  #page-express .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #page-express .panel {
+    padding: 14px;
+  }
+
+  #page-express aside.panel {
+    position: static;
+  }
+
+  #page-express #express-odds {
+    font-size: 21px;
+  }
+
+  #page-express .match {
+    padding: 12px;
+  }
+}
 <style>
 :root{--bg:#0b0812;--panel:#171020;--panel2:#21152e;--border:#352342;--purple:#a45cff;--pink:#d15cff;--text:#f8f3ff;--muted:#a99bb8;--green:#68f5b0;--red:#ff779a}
 *{box-sizing:border-box}
