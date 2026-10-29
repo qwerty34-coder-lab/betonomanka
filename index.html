@@ -349,25 +349,49 @@ function deleteMatch(id){
   render();
 }
 
-function setResult(id,side){
-  const m=getMatch(id);
-  if(!m)return;
-  if(m.result)return alert('Результат уже установлен. Сначала сбрось его.');
+async function setResult(id, side) {
+  const m = getMatch(id);
+  if (!m) return;
+  if (m.result) {
+    return alert('Результат уже установлен. Сначала сбрось его.');
+  }
 
-  m.result=side;
+  const { data, error } = await supabaseClient.functions.invoke(
+    'set-match-result',
+    {
+      body: {
+        id,
+        result: side,
+        password: ADMIN_PASSWORD
+      }
+    }
+  );
 
-  for(const bet of bets){
-    if(bet.status!=='pending')continue;
+  if (error || !data?.success) {
+    console.error(error || data);
+    return alert('Не удалось сохранить результат в Supabase.');
+  }
 
-    if(bet.legs.some(l=>getMatch(l.matchId)?.result&&getMatch(l.matchId).result!==l.side)){
-      bet.status='lost';
-      bet.profit=-bet.stake;
-    }else if(bet.legs.every(l=>getMatch(l.matchId)?.result)){
-      bet.status='won';
-      bet.profit=bet.potential;
-      balance+=bet.potential;
+  m.result = side;
+
+  for (const bet of bets) {
+    if (bet.status !== 'pending') continue;
+
+    if (bet.legs.some(l => {
+      const match = getMatch(l.matchId);
+      return match?.result && match.result !== l.side;
+    })) {
+      bet.status = 'lost';
+      bet.profit = -bet.stake;
+    } else if (bet.legs.every(l => getMatch(l.matchId)?.result)) {
+      bet.status = 'won';
+      bet.profit = bet.potential;
+      balance += bet.potential;
     }
   }
+
+  render();
+}
 
   render();
 }
