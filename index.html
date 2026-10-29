@@ -193,7 +193,29 @@ const supabaseClient = window.supabase.createClient(
   'sb_publishable_2gsZIisMpgez6W2mMDgZHg_8aHa1Q1u'
 );
 
-const ADMIN_PASSWORD='BETONO2026';const initialMatches=[{id:'m1',a:'FUT',b:'Nemiga',oa:1.33,ob:3.16,result:null},{id:'m2',a:'Vitality',b:'Natus Vincere',oa:1.30,ob:3.25,result:null},{id:'m3',a:'MOUZ',b:'Aurora',oa:1.56,ob:2.27,result:null},{id:'m4',a:'BB Team',b:'FURIA',oa:2.38,ob:1.51,result:null}];const read=(k,f)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}};let balance=read('bm_balance',100000),matches=read('bm_matches',initialMatches),bets=read('bm_bets',[]),selected=null,express=[],admin=false;const save=()=>{localStorage.setItem('bm_balance',JSON.stringify(balance));localStorage.setItem('bm_matches',JSON.stringify(matches));localStorage.setItem('bm_bets',JSON.stringify(bets))};const fmt=n=>Math.round(n).toLocaleString('ru-RU');const getMatch=id=>matches.find(m=>m.id===id);function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const ADMIN_PASSWORD='BETONO2026';const initialMatches=[{id:'m1',a:'FUT',b:'Nemiga',oa:1.33,ob:3.16,result:null},{id:'m2',a:'Vitality',b:'Natus Vincere',oa:1.30,ob:3.25,result:null},{id:'m3',a:'MOUZ',b:'Aurora',oa:1.56,ob:2.27,result:null},{id:'m4',a:'BB Team',b:'FURIA',oa:2.38,ob:1.51,result:null}];const read=(k,f)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}};let balance=read('bm_balance',100000),matches=read('bm_matches',initialMatches),bets=read('bm_bets',[]),selected=null,express=[],admin=false;const save=()=>{localStorage.setItem('bm_balance',JSON.stringify(balance));localStorage.setItem('bm_matches',JSON.stringify(matches));localStorage.setItem('bm_bets',JSON.stringify(bets))};const fmt=n=>Math.round(n).toLocaleString('ru-RU');const getMatch=id=>matches.find(m=>m.id===id);
+async function loadSharedMatches() {
+  const { data, error } = await supabaseClient
+    .from('matches')
+    .select('*');
+
+  if (error) {
+    console.error('Ошибка загрузки матчей:', error.message);
+    return;
+  }
+
+  matches = data.map(m => ({
+    id: m.id,
+    a: m.team_a,
+    b: m.team_b,
+    oa: Number(m.odds_a),
+    ob: Number(m.odds_b),
+    result: m.result
+  }));
+
+  render();
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){document.getElementById('balance').textContent=fmt(balance);document.getElementById('profile-balance').textContent=fmt(balance);renderMatches();renderExpress();renderHistory();renderAdmin();updateSingleReturn();save()}function renderMatches(){document.getElementById('matches').innerHTML=matches.map(m=>`<div class="match"><div class="matchhead"><div><div class="league">CS2 • BO3</div><div class="teams">${esc(m.a)} <span class="muted">vs</span> ${esc(m.b)}</div></div><div class="status">${m.result?'Результат: '+esc(m[m.result]):'Ожидается'}</div></div><div class="odds">${oddHtml(m,'a',m.oa)}${oddHtml(m,'b',m.ob)}</div></div>`).join('')||'<div class="empty">Матчей пока нет</div>'}function oddHtml(m,s,o){return `<button class="odd ${selected&&selected.matchId===m.id&&selected.side===s?'selected':''}" ${m.result?'disabled':''} onclick="chooseSingle('${m.id}','${s}')"><span>${esc(m[s])}</span><b>${Number(o).toFixed(2)}</b></button>`}function chooseSingle(id,side){const m=getMatch(id);if(!m||m.result)return;selected={matchId:id,side,odds:Number(side==='a'?m.oa:m.ob),team:m[side]};document.getElementById('single-choice').innerHTML=`<b>${esc(m.a)} vs ${esc(m.b)}</b><p>Исход: <b>${esc(m[side])}</b> • кэф ${selected.odds.toFixed(2)}</p>`;renderMatches();updateSingleReturn()}function updateSingleReturn(){const n=Number(document.getElementById('single-stake')?.value||0);document.getElementById('single-return').textContent=selected?'Возможный выигрыш: '+fmt(n*selected.odds)+' 🪙':'Возможный выигрыш: —'}function placeSingle(){if(!selected)return alert('Сначала выбери исход.');const stake=Number(document.getElementById('single-stake').value);if(!Number.isFinite(stake)||stake<=0||stake>balance)return alert('Проверь сумму ставки и баланс.');balance-=stake;bets.unshift({id:Date.now()+Math.random(),type:'single',legs:[{...selected}],stake,odds:selected.odds,potential:stake*selected.odds,status:'pending',profit:null,time:new Date().toISOString()});selected=null;document.getElementById('single-choice').textContent='Ставка принята';render()}
 function renderExpress(){document.getElementById('express-list').innerHTML=matches.map(m=>`<div class="match"><div class="teams">${esc(m.a)} <span class="muted">vs</span> ${esc(m.b)}</div><div class="odds">${['a','b'].map(s=>`<button class="odd ${express.some(x=>x.matchId===m.id&&x.side===s)?'selected':''}" ${m.result?'disabled':''} onclick="toggleExpress('${m.id}','${s}')"><span>${esc(m[s])}</span><b>${Number(s==='a'?m.oa:m.ob).toFixed(2)}</b></button>`).join('')}</div></div>`).join('')||'<div class="empty">Матчей пока нет</div>';const odds=express.reduce((p,x)=>p*x.odds,1);document.getElementById('express-count').textContent='Выбрано исходов: '+express.length;document.getElementById('express-odds').textContent='Коэффициент: '+odds.toFixed(2);document.getElementById('express-return').textContent='Возможный выигрыш: '+(express.length?fmt(Number(document.getElementById('express-stake').value||0)*odds)+' 🪙':'—')}function toggleExpress(id,side){const m=getMatch(id);if(!m||m.result)return;express=express.filter(x=>x.matchId!==id);express.push({matchId:id,side,odds:Number(side==='a'?m.oa:m.ob),team:m[side]});renderExpress()}function clearExpress(){express=[];renderExpress()}function placeExpress(){if(express.length<2)return alert('Для экспресса выбери минимум два матча.');const stake=Number(document.getElementById('express-stake').value);if(!Number.isFinite(stake)||stake<=0||stake>balance)return alert('Проверь сумму ставки и баланс.');balance-=stake;const odds=express.reduce((p,x)=>p*x.odds,1);bets.unshift({id:Date.now()+Math.random(),type:'express',legs:express.map(x=>({...x})),stake,odds,potential:stake*odds,status:'pending',profit:null,time:new Date().toISOString()});express=[];render()}
 
@@ -395,4 +417,4 @@ function resetDemo(){
 }
 
 document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(!b)return;document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('section[id^="page-"]').forEach(x=>x.classList.toggle('hidden',x.id!=='page-'+b.dataset.page));if(b.dataset.page==='admin'&&!admin)openAdminModal()});document.getElementById('single-stake').addEventListener('input',updateSingleReturn);document.getElementById('express-stake').addEventListener('input',renderExpress);document.getElementById('admin-modal').addEventListener('click',e=>{if(e.target.id==='admin-modal')closeAdminModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAdminModal()});render();
-</script></body></html>
+loadSharedMatches();</script></body></html>
