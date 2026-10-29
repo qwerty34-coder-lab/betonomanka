@@ -154,6 +154,27 @@
     font-size: 25px !important;
   }
 }
+
+
+.bet-ticket{background:linear-gradient(145deg,#171220,#0e0d15);border:1px solid #61358b;border-left:4px solid #a855f7;border-radius:15px;padding:16px;margin:15px 0;box-shadow:0 0 18px #a855f71c;overflow:hidden}
+.ticket-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ticket-brand{color:#c084fc;font-size:12px;font-weight:900;letter-spacing:1.5px}
+.ticket-number{color:#9693a8;font-size:12px;margin-top:5px}
+.ticket-status{padding:6px 10px;border-radius:7px;font-size:11px;font-weight:900;background:#2a2035;color:#d8b4fe}
+.ticket-status.win{color:#36e58c;background:#123124}
+.ticket-status.loss{color:#ff6b79;background:#361820}
+.ticket-type{display:inline-block;color:#d8b4fe;background:#2b1b3b;padding:5px 8px;border-radius:6px;font-size:10px;font-weight:bold;margin-top:12px}
+.ticket-match{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px dashed #3a2c49}
+.ticket-teams{font-weight:bold;font-size:14px}
+.ticket-pick{color:#aaa2ba;font-size:12px;margin-top:5px}
+.ticket-odd{color:#36e58c;font-size:17px;font-weight:900}
+.ticket-total{display:flex;justify-content:space-between;gap:10px;padding-top:15px;align-items:center}
+.ticket-label{color:#9693a8;font-size:12px;margin-bottom:5px}
+.ticket-value{font-size:19px;font-weight:900}
+.ticket-purple{color:#c084fc}
+.ticket-green{color:#36e58c}
+.ticket-footer{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#1a1523;border-radius:10px;padding:13px;margin-top:13px}
+.ticket-footer>div:last-child{text-align:right}
 </style></head>
 <body><div class="app">
 <header class="top"><div class="brand">BETONO<span>MANKA</span><div class="muted" style="font-size:11px;font-weight:500;letter-spacing:2px">CS2 PREDICTIONS • DEMO</div></div><div class="balance"><small>Виртуальный баланс</small><strong><span id="balance">100 000</span> 🪙</strong></div></header>
@@ -168,7 +189,78 @@
 const ADMIN_PASSWORD='BETONO2026';const initialMatches=[{id:'m1',a:'FUT',b:'Nemiga',oa:1.33,ob:3.16,result:null},{id:'m2',a:'Vitality',b:'Natus Vincere',oa:1.30,ob:3.25,result:null},{id:'m3',a:'MOUZ',b:'Aurora',oa:1.56,ob:2.27,result:null},{id:'m4',a:'BB Team',b:'FURIA',oa:2.38,ob:1.51,result:null}];const read=(k,f)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}};let balance=read('bm_balance',100000),matches=read('bm_matches',initialMatches),bets=read('bm_bets',[]),selected=null,express=[],admin=false;const save=()=>{localStorage.setItem('bm_balance',JSON.stringify(balance));localStorage.setItem('bm_matches',JSON.stringify(matches));localStorage.setItem('bm_bets',JSON.stringify(bets))};const fmt=n=>Math.round(n).toLocaleString('ru-RU');const getMatch=id=>matches.find(m=>m.id===id);function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){document.getElementById('balance').textContent=fmt(balance);document.getElementById('profile-balance').textContent=fmt(balance);renderMatches();renderExpress();renderHistory();renderAdmin();updateSingleReturn();save()}function renderMatches(){document.getElementById('matches').innerHTML=matches.map(m=>`<div class="match"><div class="matchhead"><div><div class="league">CS2 • BO3</div><div class="teams">${esc(m.a)} <span class="muted">vs</span> ${esc(m.b)}</div></div><div class="status">${m.result?'Результат: '+esc(m[m.result]):'Ожидается'}</div></div><div class="odds">${oddHtml(m,'a',m.oa)}${oddHtml(m,'b',m.ob)}</div></div>`).join('')||'<div class="empty">Матчей пока нет</div>'}function oddHtml(m,s,o){return `<button class="odd ${selected&&selected.matchId===m.id&&selected.side===s?'selected':''}" ${m.result?'disabled':''} onclick="chooseSingle('${m.id}','${s}')"><span>${esc(m[s])}</span><b>${Number(o).toFixed(2)}</b></button>`}function chooseSingle(id,side){const m=getMatch(id);if(!m||m.result)return;selected={matchId:id,side,odds:Number(side==='a'?m.oa:m.ob),team:m[side]};document.getElementById('single-choice').innerHTML=`<b>${esc(m.a)} vs ${esc(m.b)}</b><p>Исход: <b>${esc(m[side])}</b> • кэф ${selected.odds.toFixed(2)}</p>`;renderMatches();updateSingleReturn()}function updateSingleReturn(){const n=Number(document.getElementById('single-stake')?.value||0);document.getElementById('single-return').textContent=selected?'Возможный выигрыш: '+fmt(n*selected.odds)+' 🪙':'Возможный выигрыш: —'}function placeSingle(){if(!selected)return alert('Сначала выбери исход.');const stake=Number(document.getElementById('single-stake').value);if(!Number.isFinite(stake)||stake<=0||stake>balance)return alert('Проверь сумму ставки и баланс.');balance-=stake;bets.unshift({id:Date.now()+Math.random(),type:'single',legs:[{...selected}],stake,odds:selected.odds,potential:stake*selected.odds,status:'pending',profit:null,time:new Date().toISOString()});selected=null;document.getElementById('single-choice').textContent='Ставка принята';render()}
 function renderExpress(){document.getElementById('express-list').innerHTML=matches.map(m=>`<div class="match"><div class="teams">${esc(m.a)} <span class="muted">vs</span> ${esc(m.b)}</div><div class="odds">${['a','b'].map(s=>`<button class="odd ${express.some(x=>x.matchId===m.id&&x.side===s)?'selected':''}" ${m.result?'disabled':''} onclick="toggleExpress('${m.id}','${s}')"><span>${esc(m[s])}</span><b>${Number(s==='a'?m.oa:m.ob).toFixed(2)}</b></button>`).join('')}</div></div>`).join('')||'<div class="empty">Матчей пока нет</div>';const odds=express.reduce((p,x)=>p*x.odds,1);document.getElementById('express-count').textContent='Выбрано исходов: '+express.length;document.getElementById('express-odds').textContent='Коэффициент: '+odds.toFixed(2);document.getElementById('express-return').textContent='Возможный выигрыш: '+(express.length?fmt(Number(document.getElementById('express-stake').value||0)*odds)+' 🪙':'—')}function toggleExpress(id,side){const m=getMatch(id);if(!m||m.result)return;express=express.filter(x=>x.matchId!==id);express.push({matchId:id,side,odds:Number(side==='a'?m.oa:m.ob),team:m[side]});renderExpress()}function clearExpress(){express=[];renderExpress()}function placeExpress(){if(express.length<2)return alert('Для экспресса выбери минимум два матча.');const stake=Number(document.getElementById('express-stake').value);if(!Number.isFinite(stake)||stake<=0||stake>balance)return alert('Проверь сумму ставки и баланс.');balance-=stake;const odds=express.reduce((p,x)=>p*x.odds,1);bets.unshift({id:Date.now()+Math.random(),type:'express',legs:express.map(x=>({...x})),stake,odds,potential:stake*odds,status:'pending',profit:null,time:new Date().toISOString()});express=[];render()}
-function renderHistory(){const el=document.getElementById('history');if(!bets.length){el.innerHTML='<div class="empty">Ставок пока нет</div>';return}el.innerHTML=bets.map(b=>`<div class="betitem"><div class="row"><b>${b.type==='express'?'Экспресс':'Одиночная'}</b><span class="tag">${b.status==='pending'?'Ожидает':b.status==='won'?'Выигрыш':'Проигрыш'}</span></div><div class="muted">${b.legs.map(l=>`${esc(l.team)} (${l.odds.toFixed(2)})`).join(' + ')}</div><div>Ставка: ${fmt(b.stake)} 🪙 • кэф ${b.odds.toFixed(2)}</div><div class="${b.status==='won'?'win':b.status==='lost'?'loss':'muted'}">${b.status==='pending'?'Возможный возврат: '+fmt(b.potential)+' 🪙':b.status==='won'?'Выигрыш: +'+fmt(b.profit)+' 🪙':'Потеряно: '+fmt(b.stake)+' 🪙'}</div></div>`).join('')}
+
+function renderHistory(){
+  const el = document.getElementById('history');
+
+  if(!bets.length){
+    el.innerHTML = '<div class="empty">🎟️ Ставок пока нет</div>';
+    return;
+  }
+
+  el.innerHTML = [...bets].reverse().map(b => `
+    <div class="bet-ticket">
+      <div class="ticket-head">
+        <div>
+          <div class="ticket-brand">BETONOMANKA</div>
+          <div class="ticket-number">Купон #${b.id ?? ''}</div>
+        </div>
+        <span class="ticket-status ${
+          b.status === 'won' ? 'win' :
+          b.status === 'lost' ? 'loss' : ''
+        }">
+          ${b.status === 'pending' ? 'ОЖИДАЕТ' :
+            b.status === 'won' ? 'ВЫИГРЫШ' : 'ПРОИГРЫШ'}
+        </span>
+      </div>
+
+      <div class="ticket-type">
+        ${b.type === 'express' ? 'ЭКСПРЕСС' : 'ОРДИНАР'}
+      </div>
+
+      ${b.legs.map(l => `
+        <div class="ticket-match">
+          <div>
+            <div class="ticket-teams">${esc(l.team)}</div>
+            <div class="ticket-pick">Выбранный коэффициент</div>
+          </div>
+          <div class="ticket-odd">${Number(l.odds).toFixed(2)}</div>
+        </div>
+      `).join('')}
+
+      <div class="ticket-total">
+        <div>
+          <div class="ticket-label">Общий коэффициент</div>
+          <div class="ticket-value ticket-purple">${Number(b.odds).toFixed(2)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="ticket-label">Тип ставки</div>
+          <div class="ticket-value">${b.type === 'express' ? 'Экспресс' : 'Ординар'}</div>
+        </div>
+      </div>
+
+      <div class="ticket-footer">
+        <div>
+          <div class="ticket-label">Ставка</div>
+          <div class="ticket-value">${fmt(b.stake)} 🪙</div>
+        </div>
+        <div>
+          <div class="ticket-label">${
+            b.status === 'pending' ? 'Возможный возврат' :
+            b.status === 'won' ? 'Выигрыш' : 'Потеряно'
+          }</div>
+          <div class="ticket-value ${
+            b.status === 'lost' ? '' : 'ticket-green'
+          }">
+            ${fmt(b.status === 'pending' ? b.potential :
+                  b.status === 'won' ? b.profit : b.stake)} 🪙
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
 function renderAdmin(){document.getElementById('admin-locked').classList.toggle('hidden',admin);document.getElementById('admin-content').classList.toggle('hidden',!admin);if(!admin)return;document.getElementById('admin-results').innerHTML=matches.map(m=>`<div class="betitem"><b>${esc(m.a)} vs ${esc(m.b)}</b><div class="muted">${m.result?'Текущий результат: '+esc(m[m.result]):'Результат не установлен'}</div><div class="row" style="margin-top:8px"><button class="secondary" onclick="setResult('${m.id}','a')">${esc(m.a)} победа</button><button class="secondary" onclick="setResult('${m.id}','b')">${esc(m.b)} победа</button></div><button class="danger" style="margin-top:7px" onclick="removeResult('${m.id}')">Сбросить результат</button></div>`).join('')}function addMatch(){const a=document.getElementById('team1').value.trim(),b=document.getElementById('team2').value.trim(),oa=Number(document.getElementById('odds1').value),ob=Number(document.getElementById('odds2').value);if(!a||!b||a===b||oa<=1||ob<=1)return alert('Введи две разные команды и коэффициенты больше 1.');matches.push({id:'m'+Date.now(),a,b,oa,ob,result:null});document.getElementById('team1').value='';document.getElementById('team2').value='';render()}function setResult(id,side){const m=getMatch(id);if(!m)return;if(m.result)return alert('Результат уже установлен. Сначала сбрось его.');m.result=side;for(const bet of bets){if(bet.status!=='pending')continue;if(bet.legs.some(l=>getMatch(l.matchId)?.result&&getMatch(l.matchId).result!==l.side)){bet.status='lost';bet.profit=-bet.stake}else if(bet.legs.every(l=>getMatch(l.matchId)?.result)){bet.status='won';bet.profit=bet.potential;balance+=bet.potential}}render()}function removeResult(id){const m=getMatch(id);if(!m)return;if(!confirm('Сбросить результат? Уже рассчитанные ставки не пересчитываются.'))return;m.result=null;render()}function openAdminModal(){document.getElementById('admin-modal').classList.remove('hidden');document.getElementById('admin-password').value='';document.getElementById('login-error').textContent=''}function closeAdminModal(){document.getElementById('admin-modal').classList.add('hidden')}function submitAdminLogin(e){e.preventDefault();if(document.getElementById('admin-password').value===ADMIN_PASSWORD){admin=true;closeAdminModal();renderAdmin()}else document.getElementById('login-error').textContent='Неверный пароль.'}function adminLogout(){admin=false;renderAdmin()}function resetDemo(){if(!confirm('Сбросить баланс, ставки и матчи?'))return;balance=100000;matches=JSON.parse(JSON.stringify(initialMatches));bets=[];selected=null;express=[];render()}
 document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(!b)return;document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('section[id^="page-"]').forEach(x=>x.classList.toggle('hidden',x.id!=='page-'+b.dataset.page));if(b.dataset.page==='admin'&&!admin)openAdminModal()});document.getElementById('single-stake').addEventListener('input',updateSingleReturn);document.getElementById('express-stake').addEventListener('input',renderExpress);document.getElementById('admin-modal').addEventListener('click',e=>{if(e.target.id==='admin-modal')closeAdminModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAdminModal()});render();
 </script></body></html>
