@@ -261,6 +261,131 @@ function renderHistory(){
   `).join('');
 }
 
-function renderAdmin(){document.getElementById('admin-locked').classList.toggle('hidden',admin);document.getElementById('admin-content').classList.toggle('hidden',!admin);if(!admin)return;document.getElementById('admin-results').innerHTML=matches.map(m=>`<div class="betitem"><b>${esc(m.a)} vs ${esc(m.b)}</b><div class="muted">${m.result?'Текущий результат: '+esc(m[m.result]):'Результат не установлен'}</div><div class="row" style="margin-top:8px"><button class="secondary" onclick="setResult('${m.id}','a')">${esc(m.a)} победа</button><button class="secondary" onclick="setResult('${m.id}','b')">${esc(m.b)} победа</button></div><button class="danger" style="margin-top:7px" onclick="removeResult('${m.id}')">Сбросить результат</button></div>`).join('')}function addMatch(){const a=document.getElementById('team1').value.trim(),b=document.getElementById('team2').value.trim(),oa=Number(document.getElementById('odds1').value),ob=Number(document.getElementById('odds2').value);if(!a||!b||a===b||oa<=1||ob<=1)return alert('Введи две разные команды и коэффициенты больше 1.');matches.push({id:'m'+Date.now(),a,b,oa,ob,result:null});document.getElementById('team1').value='';document.getElementById('team2').value='';render()}function setResult(id,side){const m=getMatch(id);if(!m)return;if(m.result)return alert('Результат уже установлен. Сначала сбрось его.');m.result=side;for(const bet of bets){if(bet.status!=='pending')continue;if(bet.legs.some(l=>getMatch(l.matchId)?.result&&getMatch(l.matchId).result!==l.side)){bet.status='lost';bet.profit=-bet.stake}else if(bet.legs.every(l=>getMatch(l.matchId)?.result)){bet.status='won';bet.profit=bet.potential;balance+=bet.potential}}render()}function removeResult(id){const m=getMatch(id);if(!m)return;if(!confirm('Сбросить результат? Уже рассчитанные ставки не пересчитываются.'))return;m.result=null;render()}function openAdminModal(){document.getElementById('admin-modal').classList.remove('hidden');document.getElementById('admin-password').value='';document.getElementById('login-error').textContent=''}function closeAdminModal(){document.getElementById('admin-modal').classList.add('hidden')}function submitAdminLogin(e){e.preventDefault();if(document.getElementById('admin-password').value===ADMIN_PASSWORD){admin=true;closeAdminModal();renderAdmin()}else document.getElementById('login-error').textContent='Неверный пароль.'}function adminLogout(){admin=false;renderAdmin()}function resetDemo(){if(!confirm('Сбросить баланс, ставки и матчи?'))return;balance=100000;matches=JSON.parse(JSON.stringify(initialMatches));bets=[];selected=null;express=[];render()}
+
+function renderAdmin(){
+  document.getElementById('admin-locked').classList.toggle('hidden',admin);
+  document.getElementById('admin-content').classList.toggle('hidden',!admin);
+  if(!admin)return;
+
+  document.getElementById('admin-results').innerHTML=matches.map(m=>`
+    <div class="betitem">
+      <b>${esc(m.a)} vs ${esc(m.b)}</b>
+      <div class="muted">
+        ${m.result?'Текущий результат: '+esc(m[m.result]):'Результат не установлен'}
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="secondary" onclick="setResult('${m.id}','a')">${esc(m.a)} победа</button>
+        <button class="secondary" onclick="setResult('${m.id}','b')">${esc(m.b)} победа</button>
+      </div>
+      <button class="danger" style="margin-top:7px" onclick="removeResult('${m.id}')">
+        Сбросить результат
+      </button>
+      <button class="danger" style="margin-top:7px" onclick="deleteMatch('${m.id}')">
+        Удалить матч
+      </button>
+    </div>
+  `).join('');
+}
+
+function addMatch(){
+  const a=document.getElementById('team1').value.trim();
+  const b=document.getElementById('team2').value.trim();
+  const oa=Number(document.getElementById('odds1').value);
+  const ob=Number(document.getElementById('odds2').value);
+
+  if(!a||!b||a===b||oa<=1||ob<=1)
+    return alert('Введи две разные команды и коэффициенты больше 1.');
+
+  matches.push({id:'m'+Date.now(),a,b,oa,ob,result:null});
+  document.getElementById('team1').value='';
+  document.getElementById('team2').value='';
+  render();
+}
+
+function deleteMatch(id){
+  const m=getMatch(id);
+  if(!m)return;
+
+  if(!confirm('Удалить матч '+m.a+' vs '+m.b+'?'))return;
+
+  matches.splice(matches.findIndex(match=>match.id===id),1);
+
+  if(selected===id)selected=null;
+  if(selected && typeof selected==='object' && selected.matchId===id)selected=null;
+
+  if(Array.isArray(express)){
+    express=express.filter(leg=>leg.matchId!==id);
+  }
+
+  render();
+}
+
+function setResult(id,side){
+  const m=getMatch(id);
+  if(!m)return;
+  if(m.result)return alert('Результат уже установлен. Сначала сбрось его.');
+
+  m.result=side;
+
+  for(const bet of bets){
+    if(bet.status!=='pending')continue;
+
+    if(bet.legs.some(l=>getMatch(l.matchId)?.result&&getMatch(l.matchId).result!==l.side)){
+      bet.status='lost';
+      bet.profit=-bet.stake;
+    }else if(bet.legs.every(l=>getMatch(l.matchId)?.result)){
+      bet.status='won';
+      bet.profit=bet.potential;
+      balance+=bet.potential;
+    }
+  }
+
+  render();
+}
+
+function removeResult(id){
+  const m=getMatch(id);
+  if(!m)return;
+  if(!confirm('Сбросить результат? Уже рассчитанные ставки не пересчитываются.'))return;
+  m.result=null;
+  render();
+}
+
+function openAdminModal(){
+  document.getElementById('admin-modal').classList.remove('hidden');
+  document.getElementById('admin-password').value='';
+  document.getElementById('login-error').textContent='';
+}
+
+function closeAdminModal(){
+  document.getElementById('admin-modal').classList.add('hidden');
+}
+
+function submitAdminLogin(e){
+  e.preventDefault();
+  if(document.getElementById('admin-password').value===ADMIN_PASSWORD){
+    admin=true;
+    closeAdminModal();
+    renderAdmin();
+  }else{
+    document.getElementById('login-error').textContent='Неверный пароль.';
+  }
+}
+
+function adminLogout(){
+  admin=false;
+  renderAdmin();
+}
+
+function resetDemo(){
+  if(!confirm('Сбросить баланс, ставки и матчи?'))return;
+  balance=100000;
+  matches=JSON.parse(JSON.stringify(initialMatches));
+  bets=[];
+  selected=null;
+  express=[];
+  render();
+}
+
 document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(!b)return;document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('section[id^="page-"]').forEach(x=>x.classList.toggle('hidden',x.id!=='page-'+b.dataset.page));if(b.dataset.page==='admin'&&!admin)openAdminModal()});document.getElementById('single-stake').addEventListener('input',updateSingleReturn);document.getElementById('express-stake').addEventListener('input',renderExpress);document.getElementById('admin-modal').addEventListener('click',e=>{if(e.target.id==='admin-modal')closeAdminModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAdminModal()});render();
 </script></body></html>
