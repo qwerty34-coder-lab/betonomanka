@@ -349,21 +349,28 @@ function deleteMatch(id){
   render();
 }
 
-async function setResult(id, side) {
-  const m = getMatch(id);
-  if (!m) return;
-  if (m.result) {
-    return alert('Результат уже установлен. Сначала сбрось его.');
+function setResult(id,side){
+  const m=getMatch(id);
+  if(!m)return;
+  if(m.result)return alert('Результат уже установлен. Сначала сбрось его.');
+
+  m.result=side;
+
+  for(const bet of bets){
+    if(bet.status!=='pending')continue;
+
+    if(bet.legs.some(l=>getMatch(l.matchId)?.result&&getMatch(l.matchId).result!==l.side)){
+      bet.status='lost';
+      bet.profit=-bet.stake;
+    }else if(bet.legs.every(l=>getMatch(l.matchId)?.result)){
+      bet.status='won';
+      bet.profit=bet.potential;
+      balance+=bet.potential;
+    }
   }
 
-  const { data, error } = await supabaseClient.functions.invoke(
-    'set-match-result',
-    {
-      body: {
-        id,
-        result: side,
-        password: ADMIN_PASSWORD
-      }
+  render();
+}
     }
   );
 
